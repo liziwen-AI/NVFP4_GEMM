@@ -1,6 +1,7 @@
 import torch
 from task import input_t, output_t
 from utils import make_match_reference
+from submission import custom_kernel
 
 # Scaling factor vector size
 sf_vec_size = 16
@@ -160,18 +161,15 @@ def generate_input(
 
 check_implementation = make_match_reference(ref_kernel, rtol=1e-03, atol=1e-03)
 
-m, n, k, l, seed = 128, 128, 64, 2, 42
+m, n, k, l, seed = 128, 256, 256, 1, 1111
 data = generate_input(m, n, k, l, seed)
 a_ref, b_ref, _, _, sfa_permuted, sfb_permuted, c_ref = data
-my_output = ref_kernel(a_ref, b_ref, sfa_permuted, sfb_permuted, c_ref.clone())
+my_output = custom_kernel(a_ref, b_ref, sfa_permuted, sfb_permuted, c_ref.clone())
 is_correct, error_msg = check_implementation(data, my_output)
 if is_correct:
     print("🎉 恭喜！你的自定义算子实现与参考实现完全吻合，精度达标！")
 else:
     print(f"❌ 验证失败！错误信息：{error_msg}")
 
-
-
-
-
+    
 
