@@ -1,0 +1,1203 @@
+Windows PowerShell
+版权所有 (C) Microsoft Corporation。保留所有权利。
+
+尝试新的跨平台 PowerShell https://aka.ms/pscore6
+
+加载个人及系统配置文件用了 60818 毫秒。
+(base) PS C:\Users\lzw20> ssh root@86.38.182.132
+The authenticity of host '86.38.182.132 (86.38.182.132)' can't be established.
+ED25519 key fingerprint is SHA256:T+thZRukx+5v1/j6+pjEC2iBSlsuVNEto8Mfl8wGXRQ.
+This key is not known by any other names.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added '86.38.182.132' (ED25519) to the list of known hosts.
+Welcome to Ubuntu 22.04.5 LTS (GNU/Linux 5.15.0-170-generic x86_64)
+                                        ...:::-----::...
+                               ..:-++**##################**++=:..
+                             :+##################################*+=:.
+                       ..:++-.=#######################################*=:.
+                     .=*####+:.*#################: .+#####################*-..
+                  .=*########=.-#################- .:########################*-.
+               .-*###########*:.*################*  .+#####+-:::::::::::-=*#####*:
+             .=###############- =#################: .:#####=.               ...:+#*-.
+           .=###############+.. :###############+.. .:*####-.  .+####=           ...--
+         .-###############*:    .*###########+.      .+###*:     .###*:
+        .################:       *########*:.        .=###=.      .=##+.
+      .+##############*.         +######+.           .-##*-        .-##=.
+    .:##############-.           +####*.             .-##=.         .-#+:
+   .=############=..             +###-               .=#*:           .-*-
+  .+#########*-..               .*#*.                .=#-             .==.
+ .+#####*+-.                    .*=.                 .+=.              :-:
+.=*+-:.                         ::.                  .-.                :.
+
+
+ System information as of Thu Jun 11 02:47:59 UTC 2026
+
+  System load:  0.17               Processes:             404
+  Usage of /:   27.0% of 48.27GB   Users logged in:       0
+  Memory usage: 0%                 IPv4 address for eth0: 86.38.182.132
+  Swap usage:   0%
+
+Expanded Security Maintenance for Applications is not enabled.
+
+168 updates can be applied immediately.
+133 of these updates are standard security updates.
+To see these additional updates run: apt list --upgradable
+
+Enable ESM Apps to receive additional future security updates.
+See https://ubuntu.com/esm or run: sudo pro status
+
+
+
+The programs included with the Ubuntu system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Ubuntu comes with ABSOLUTELY NO WARRANTY, to the extent permitted by
+applicable law.
+
+root@rich-home-speaks-fin-03:~#
+root@rich-home-speaks-fin-03:~# ls
+snap
+root@rich-home-speaks-fin-03:~# cd snap
+root@rich-home-speaks-fin-03:~/snap# ls
+lxd
+root@rich-home-speaks-fin-03:~/snap# cd ..
+root@rich-home-speaks-fin-03:~# lsblk
+NAME   MAJ:MIN RM  SIZE RO TYPE MOUNTPOINTS
+loop0    7:0    0 63.8M  1 loop /snap/core20/2686
+loop1    7:1    0 91.4M  1 loop /snap/lxd/36918
+loop2    7:2    0 48.1M  1 loop /snap/snapd/25935
+sr0     11:0    1   10M  0 rom
+vda    252:0    0   50G  0 disk
+├─vda1 252:1    0    4M  0 part
+├─vda2 252:2    0  106M  0 part /boot/efi
+└─vda3 252:3    0 49.9G  0 part /
+vdb    252:16   0   50G  0 disk
+├─vdb1 252:17   0    4M  0 part
+├─vdb2 252:18   0  106M  0 part
+└─vdb3 252:19   0 49.9G  0 part
+root@rich-home-speaks-fin-03:~#
+root@rich-home-speaks-fin-03:~#
+root@rich-home-speaks-fin-03:~# ls
+snap
+root@rich-home-speaks-fin-03:~#
+root@rich-home-speaks-fin-03:~#
+root@rich-home-speaks-fin-03:~# nvcc --version
+nvcc: NVIDIA (R) Cuda compiler driver
+Copyright (c) 2005-2025 NVIDIA Corporation
+Built on Wed_Aug_20_01:58:59_PM_PDT_2025
+Cuda compilation tools, release 13.0, V13.0.88
+Build cuda_13.0.r13.0/compiler.36424714_0
+root@rich-home-speaks-fin-03:~# sudo apt update
+Hit:1 http://fin-03.clouds.archive.ubuntu.com/ubuntu jammy InRelease
+Hit:2 http://fin-03.clouds.archive.ubuntu.com/ubuntu jammy-updates InRelease
+Hit:3 http://security.ubuntu.com/ubuntu jammy-security InRelease
+Hit:4 http://fin-03.clouds.archive.ubuntu.com/ubuntu jammy-backports InRelease
+Hit:5 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  InRelease
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+160 packages can be upgraded. Run 'apt list --upgradable' to see them.
+root@rich-home-speaks-fin-03:~# mkdir -p ~/miniconda3
+root@rich-home-speaks-fin-03:~# wget https://repo.anaconda.com/miniconda/Miniconda3-py311_26.3.2-2-Linux-x86_64.sh -O ~/miniconda3/miniconda.sh
+--2026-06-11 02:55:21--  https://repo.anaconda.com/miniconda/Miniconda3-py311_26.3.2-2-Linux-x86_64.sh
+Resolving repo.anaconda.com (repo.anaconda.com)... 104.16.32.241, 104.16.191.158, 2606:4700::6810:20f1, ...
+Connecting to repo.anaconda.com (repo.anaconda.com)|104.16.32.241|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 161080095 (154M) [application/octet-stream]
+Saving to: ‘/root/miniconda3/miniconda.sh’
+
+/root/miniconda3/minico 100%[=============================>] 153.62M  88.6MB/s    in 1.7s
+
+2026-06-11 02:55:23 (88.6 MB/s) - ‘/root/miniconda3/miniconda.sh’ saved [161080095/161080095]
+
+root@rich-home-speaks-fin-03:~# bash ~/miniconda3/miniconda.sh -b -u -p ~/miniconda3
+PREFIX=/root/miniconda3
+Unpacking bootstrapper...
+Unpacking payload...
+
+Installing base environment...
+
+Preparing transaction: ...working... done
+Executing transaction: ...working... done
+installation finished.
+root@rich-home-speaks-fin-03:~#
+root@rich-home-speaks-fin-03:~# rm -rf ~/miniconda3/miniconda.sh
+root@rich-home-speaks-fin-03:~# ~/miniconda3/bin/conda init bash
+no change     /root/miniconda3/condabin/conda
+no change     /root/miniconda3/bin/conda
+no change     /root/miniconda3/bin/activate
+no change     /root/miniconda3/bin/deactivate
+no change     /root/miniconda3/etc/profile.d/conda.sh
+no change     /root/miniconda3/etc/fish/conf.d/conda.fish
+no change     /root/miniconda3/shell/condabin/Conda.psm1
+no change     /root/miniconda3/shell/condabin/conda-hook.ps1
+no change     /root/miniconda3/lib/python3.11/site-packages/xontrib/conda.xsh
+no change     /root/miniconda3/etc/profile.d/conda.csh
+modified      /root/.bashrc
+
+==> For changes to take effect, close and re-open your current shell. <==
+
+root@rich-home-speaks-fin-03:~# source ~/.bashrc
+(base) root@rich-home-speaks-fin-03:~#
+(base) root@rich-home-speaks-fin-03:~# conda --version
+conda 26.3.2
+(base) root@rich-home-speaks-fin-03:~#
+(base) root@rich-home-speaks-fin-03:~# pip install ninja
+Collecting ninja
+  Downloading ninja-1.13.0-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (5.1 kB)
+Downloading ninja-1.13.0-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (180 kB)
+Installing collected packages: ninja
+Successfully installed ninja-1.13.0
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+(base) root@rich-home-speaks-fin-03:~# pip install cuda-python==13.0.0
+Collecting cuda-python==13.0.0
+  Downloading cuda_python-13.0.0-py3-none-any.whl.metadata (4.7 kB)
+Collecting cuda-bindings~=13.0.0 (from cuda-python==13.0.0)
+  Downloading cuda_bindings-13.0.3-cp311-cp311-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl.metadata (2.3 kB)
+Collecting cuda-pathfinder~=1.1 (from cuda-bindings~=13.0.0->cuda-python==13.0.0)
+  Downloading cuda_pathfinder-1.5.5-py3-none-any.whl.metadata (1.9 kB)
+Downloading cuda_python-13.0.0-py3-none-any.whl (7.6 kB)
+Downloading cuda_bindings-13.0.3-cp311-cp311-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl (12.2 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 12.2/12.2 MB 44.8 MB/s  0:00:00
+Downloading cuda_pathfinder-1.5.5-py3-none-any.whl (51 kB)
+Installing collected packages: cuda-pathfinder, cuda-bindings, cuda-python
+Successfully installed cuda-bindings-13.0.3 cuda-pathfinder-1.5.5 cuda-python-13.0.0
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+(base) root@rich-home-speaks-fin-03:~#
+(base) root@rich-home-speaks-fin-03:~# pip install torch --index-url https://download.pytorch.org/whl/cu130
+Looking in indexes: https://download.pytorch.org/whl/cu130
+Collecting torch
+  Downloading https://download-r2.pytorch.org/whl/cu130/torch-2.12.0%2Bcu130-cp311-cp311-manylinux_2_28_x86_64.whl.metadata (31 kB)
+Collecting filelock (from torch)
+  Downloading filelock-3.29.0-py3-none-any.whl.metadata (2.0 kB)
+Requirement already satisfied: typing-extensions>=4.10.0 in ./miniconda3/lib/python3.11/site-packages (from torch) (4.15.0)
+Collecting setuptools<82 (from torch)
+  Downloading https://download.pytorch.org/whl/setuptools-70.2.0-py3-none-any.whl.metadata (5.8 kB)
+Collecting sympy>=1.13.3 (from torch)
+  Downloading sympy-1.14.0-py3-none-any.whl.metadata (12 kB)
+Collecting networkx>=2.5.1 (from torch)
+  Downloading networkx-3.6.1-py3-none-any.whl.metadata (6.8 kB)
+Collecting jinja2 (from torch)
+  Downloading https://download.pytorch.org/whl/jinja2-3.1.6-py3-none-any.whl.metadata (2.9 kB)Collecting fsspec>=0.8.5 (from torch)
+  Downloading fsspec-2026.4.0-py3-none-any.whl.metadata (10 kB)
+Collecting cuda-toolkit==13.0.2 (from cuda-toolkit[cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==13.0.2; platform_system == "Linux"->torch)
+  Downloading https://pypi.nvidia.com/cuda-toolkit/cuda_toolkit-13.0.2-py2.py3-none-any.whl (2.4 kB)
+Collecting nvidia-cublas<=13.1.1.3,>=13.1.0.3 (from torch)
+  Downloading https://pypi.nvidia.com/nvidia-cublas/nvidia_cublas-13.1.1.3-py3-none-manylinux_2_27_x86_64.whl (423.1 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 423.1/423.1 MB 71.8 MB/s  0:00:06
+Requirement already satisfied: cuda-bindings<14,>=13.0.3 in ./miniconda3/lib/python3.11/site-packages (from torch) (13.0.3)
+Collecting nvidia-cudnn-cu13==9.20.0.48 (from torch)
+  Downloading https://pypi.nvidia.com/nvidia-cudnn-cu13/nvidia_cudnn_cu13-9.20.0.48-py3-none-manylinux_2_27_x86_64.whl (366.2 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 366.2/366.2 MB 72.4 MB/s  0:00:05
+Collecting nvidia-cusparselt-cu13==0.8.1 (from torch)
+  Downloading https://pypi.nvidia.com/nvidia-cusparselt-cu13/nvidia_cusparselt_cu13-0.8.1-py3-none-manylinux2014_x86_64.whl (170.1 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 170.1/170.1 MB 72.8 MB/s  0:00:02
+Collecting nvidia-nccl-cu13==2.29.7 (from torch)
+  Downloading https://pypi.nvidia.com/nvidia-nccl-cu13/nvidia_nccl_cu13-2.29.7-py3-none-manylinux_2_18_x86_64.whl (206.0 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 206.0/206.0 MB 67.1 MB/s  0:00:03
+Collecting nvidia-nvshmem-cu13==3.4.5 (from torch)
+  Downloading https://pypi.nvidia.com/nvidia-nvshmem-cu13/nvidia_nvshmem_cu13-3.4.5-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (60.4 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 60.4/60.4 MB 74.2 MB/s  0:00:00
+Collecting triton==3.7.0 (from torch)
+  Downloading https://download-r2.pytorch.org/whl/triton-3.7.0-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (1.7 kB)
+Collecting nvidia-cuda-runtime==13.0.96.* (from cuda-toolkit[cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==13.0.2; platform_system == "Linux"->torch)
+  Downloading https://pypi.nvidia.com/nvidia-cuda-runtime/nvidia_cuda_runtime-13.0.96-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (2.2 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.2/2.2 MB 219.6 MB/s  0:00:00
+Collecting nvidia-cufft==12.0.0.61.* (from cuda-toolkit[cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==13.0.2; platform_system == "Linux"->torch)
+  Downloading https://pypi.nvidia.com/nvidia-cufft/nvidia_cufft-12.0.0.61-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (214.1 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 214.1/214.1 MB 73.3 MB/s  0:00:02
+Collecting nvidia-cufile==1.15.1.6.* (from cuda-toolkit[cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==13.0.2; platform_system == "Linux"->torch)
+  Downloading https://pypi.nvidia.com/nvidia-cufile/nvidia_cufile-1.15.1.6-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (1.2 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.2/1.2 MB 231.7 MB/s  0:00:00
+Collecting nvidia-cuda-cupti==13.0.85.* (from cuda-toolkit[cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==13.0.2; platform_system == "Linux"->torch)
+  Downloading https://pypi.nvidia.com/nvidia-cuda-cupti/nvidia_cuda_cupti-13.0.85-py3-none-manylinux_2_25_x86_64.whl (10.7 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 10.7/10.7 MB 78.3 MB/s  0:00:00
+Collecting nvidia-curand==10.4.0.35.* (from cuda-toolkit[cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==13.0.2; platform_system == "Linux"->torch)
+  Downloading https://pypi.nvidia.com/nvidia-curand/nvidia_curand-10.4.0.35-py3-none-manylinux_2_27_x86_64.whl (59.5 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 59.5/59.5 MB 57.4 MB/s  0:00:01
+Collecting nvidia-cusolver==12.0.4.66.* (from cuda-toolkit[cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==13.0.2; platform_system == "Linux"->torch)
+  Downloading https://pypi.nvidia.com/nvidia-cusolver/nvidia_cusolver-12.0.4.66-py3-none-manylinux_2_27_x86_64.whl (200.9 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 200.9/200.9 MB 73.0 MB/s  0:00:02
+Collecting nvidia-cusparse==12.6.3.3.* (from cuda-toolkit[cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==13.0.2; platform_system == "Linux"->torch)
+  Downloading https://pypi.nvidia.com/nvidia-cusparse/nvidia_cusparse-12.6.3.3-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (145.9 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 145.9/145.9 MB 73.5 MB/s  0:00:01
+Collecting nvidia-nvjitlink==13.0.88.* (from cuda-toolkit[cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==13.0.2; platform_system == "Linux"->torch)
+  Downloading https://pypi.nvidia.com/nvidia-nvjitlink/nvidia_nvjitlink-13.0.88-py3-none-manylinux2010_x86_64.manylinux_2_12_x86_64.whl (40.7 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 40.7/40.7 MB 73.4 MB/s  0:00:00
+Collecting nvidia-cuda-nvrtc==13.0.88.* (from cuda-toolkit[cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==13.0.2; platform_system == "Linux"->torch)
+  Downloading https://pypi.nvidia.com/nvidia-cuda-nvrtc/nvidia_cuda_nvrtc-13.0.88-py3-none-manylinux2010_x86_64.manylinux_2_12_x86_64.whl (90.2 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 90.2/90.2 MB 73.6 MB/s  0:00:01
+Collecting nvidia-nvtx==13.0.85.* (from cuda-toolkit[cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==13.0.2; platform_system == "Linux"->torch)
+  Downloading https://pypi.nvidia.com/nvidia-nvtx/nvidia_nvtx-13.0.85-py3-none-manylinux1_x86_64.manylinux_2_5_x86_64.whl (148 kB)
+Requirement already satisfied: cuda-pathfinder~=1.1 in ./miniconda3/lib/python3.11/site-packages (from cuda-bindings<14,>=13.0.3->torch) (1.5.5)
+Collecting mpmath<1.4,>=1.1.0 (from sympy>=1.13.3->torch)
+  Downloading mpmath-1.3.0-py3-none-any.whl.metadata (8.6 kB)
+Collecting MarkupSafe>=2.0 (from jinja2->torch)
+  Downloading https://download.pytorch.org/whl/markupsafe-3.0.3-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.7 kB)
+Downloading https://download-r2.pytorch.org/whl/cu130/torch-2.12.0%2Bcu130-cp311-cp311-manylinux_2_28_x86_64.whl (532.6 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 532.6/532.6 MB 87.8 MB/s  0:00:05
+Downloading https://download-r2.pytorch.org/whl/triton-3.7.0-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (201.4 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 201.4/201.4 MB 95.7 MB/s  0:00:02
+Downloading https://download.pytorch.org/whl/setuptools-70.2.0-py3-none-any.whl (930 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 930.8/930.8 kB 13.2 MB/s  0:00:00
+Downloading fsspec-2026.4.0-py3-none-any.whl (203 kB)
+Downloading networkx-3.6.1-py3-none-any.whl (2.1 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.1/2.1 MB 70.1 MB/s  0:00:00
+Downloading sympy-1.14.0-py3-none-any.whl (6.3 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 6.3/6.3 MB 141.3 MB/s  0:00:00
+Downloading mpmath-1.3.0-py3-none-any.whl (536 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 536.2/536.2 kB 34.0 MB/s  0:00:00
+Downloading filelock-3.29.0-py3-none-any.whl (39 kB)
+Downloading https://download.pytorch.org/whl/jinja2-3.1.6-py3-none-any.whl (134 kB)
+Downloading https://download.pytorch.org/whl/markupsafe-3.0.3-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (22 kB)
+Installing collected packages: nvidia-cusparselt-cu13, mpmath, cuda-toolkit, triton, sympy, setuptools, nvidia-nvtx, nvidia-nvshmem-cu13, nvidia-nvjitlink, nvidia-nccl-cu13, nvidia-curand, nvidia-cufile, nvidia-cuda-runtime, nvidia-cuda-nvrtc, nvidia-cuda-cupti, networkx, MarkupSafe, fsspec, filelock, nvidia-cusparse, nvidia-cufft, nvidia-cublas, jinja2, nvidia-cusolver, nvidia-cudnn-cu13, torch
+  Attempting uninstall: setuptools
+    Found existing installation: setuptools 82.0.1
+    Uninstalling setuptools-82.0.1:
+      Successfully uninstalled setuptools-82.0.1
+Successfully installed MarkupSafe-3.0.3 cuda-toolkit-13.0.2 filelock-3.29.0 fsspec-2026.4.0 jinja2-3.1.6 mpmath-1.3.0 networkx-3.6.1 nvidia-cublas-13.1.1.3 nvidia-cuda-cupti-13.0.85 nvidia-cuda-nvrtc-13.0.88 nvidia-cuda-runtime-13.0.96 nvidia-cudnn-cu13-9.20.0.48 nvidia-cufft-12.0.0.61 nvidia-cufile-1.15.1.6 nvidia-curand-10.4.0.35 nvidia-cusolver-12.0.4.66 nvidia-cusparse-12.6.3.3 nvidia-cusparselt-cu13-0.8.1 nvidia-nccl-cu13-2.29.7 nvidia-nvjitlink-13.0.88 nvidia-nvshmem-cu13-3.4.5 nvidia-nvtx-13.0.85 setuptools-70.2.0 sympy-1.14.0 torch-2.12.0+cu130 triton-3.7.0
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+(base) root@rich-home-speaks-fin-03:~#
+(base) root@rich-home-speaks-fin-03:~# git clone  --recursive https://github.com/NVIDIA/cutlass.git
+Cloning into 'cutlass'...
+remote: Enumerating objects: 43085, done.
+remote: Counting objects: 100% (43/43), done.
+remote: Compressing objects: 100% (31/31), done.
+remote: Total 43085 (delta 27), reused 12 (delta 12), pack-reused 43042 (from 3)
+Receiving objects: 100% (43085/43085), 65.85 MiB | 38.51 MiB/s, done.
+Resolving deltas: 100% (32862/32862), done.
+(base) root@rich-home-speaks-fin-03:~# cd cutlass
+(base) root@rich-home-speaks-fin-03:~/cutlass# cd python
+(base) root@rich-home-speaks-fin-03:~/cutlass/python# export CUTLASS_NVCC_ARCHS=100
+(base) root@rich-home-speaks-fin-03:~/cutlass/python#
+(base) root@rich-home-speaks-fin-03:~/cutlass/python# pip install numpy
+Collecting numpy
+  Downloading numpy-2.4.6-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (6.6 kB)
+Downloading numpy-2.4.6-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (16.9 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 16.9/16.9 MB 198.2 MB/s  0:00:00
+Installing collected packages: numpy
+Successfully installed numpy-2.4.6
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+(base) root@rich-home-speaks-fin-03:~/cutlass/python# lscpu
+Architecture:                x86_64
+  CPU op-mode(s):            32-bit, 64-bit
+  Address sizes:             52 bits physical, 57 bits virtual
+  Byte Order:                Little Endian
+CPU(s):                      30
+  On-line CPU(s) list:       0-29
+Vendor ID:                   AuthenticAMD
+  Model name:                AMD EPYC 9575F 64-Core Processor
+    CPU family:              26
+    Model:                   2
+    Thread(s) per core:      1
+    Core(s) per socket:      1
+    Socket(s):               30
+    Stepping:                1
+    BogoMIPS:                6600.00
+    Flags:                   fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat                              pse36 clflush mmx fxsr sse sse2 syscall nx mmxext fxsr_opt pdpe1                             gb rdtscp lm rep_good nopl cpuid extd_apicid tsc_known_freq pni p                             clmulqdq ssse3 fma cx16 pcid sse4_1 sse4_2 x2apic movbe popcnt ts                             c_deadline_timer aes xsave avx f16c rdrand hypervisor lahf_lm cmp                             _legacy svm cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw p                             erfctr_core invpcid_single ssbd ibrs ibpb stibp ibrs_enhanced vmm                             call fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid avx512f                              avx512dq rdseed adx smap avx512ifma clflushopt clwb avx512cd sha                             _ni avx512bw avx512vl xsaveopt xsavec xgetbv1 xsaves avx_vnni avx                             512_bf16 clzero xsaveerptr wbnoinvd arat npt lbrv nrip_save tsc_s                             cale vmcb_clean flushbyasid pausefilter pfthreshold v_vmsave_vmlo                             ad vgif avx512vbmi umip pku ospke avx512_vbmi2 gfni vaes vpclmulq                             dq avx512_vnni avx512_bitalg avx512_vpopcntdq la57 rdpid movdiri
+                             movdir64b fsrm avx512_vp2intersect flush_l1d arch_capabilities
+Virtualization features:
+  Virtualization:            AMD-V
+  Hypervisor vendor:         KVM
+  Virtualization type:       full
+Caches (sum of all):
+  L1d:                       1.9 MiB (30 instances)
+  L1i:                       1.9 MiB (30 instances)
+  L2:                        15 MiB (30 instances)
+  L3:                        480 MiB (30 instances)
+NUMA:
+  NUMA node(s):              1
+  NUMA node0 CPU(s):         0-29
+Vulnerabilities:
+  Gather data sampling:      Not affected
+  Indirect target selection: Not affected
+  Itlb multihit:             Not affected
+  L1tf:                      Not affected
+  Mds:                       Not affected
+  Meltdown:                  Not affected
+  Mmio stale data:           Not affected
+  Reg file data sampling:    Not affected
+  Retbleed:                  Not affected
+  Spec rstack overflow:      Not affected
+  Spec store bypass:         Mitigation; Speculative Store Bypass disabled via prctl and secco                             mp
+  Spectre v1:                Mitigation; usercopy/swapgs barriers and __user pointer sanitizat                             ion
+  Spectre v2:                Mitigation; Enhanced / Automatic IBRS; IBPB conditional; STIBP di                             sabled; PBRSB-eIBRS Not affected; BHI Not affected
+  Srbds:                     Not affected
+  Tsa:                       Not affected
+  Tsx async abort:           Not affected
+  Vmscape:                   Not affected
+(base) root@rich-home-speaks-fin-03:~/cutlass/python# nproc
+30
+(base) root@rich-home-speaks-fin-03:~/cutlass/python# top
+top - 03:00:51 up 14 min,  1 user,  load average: 0.02, 0.07, 0.03
+Tasks: 367 total,   1 running, 366 sleeping,   0 stopped,   0 zombie
+%Cpu(s):  0.0 us,  0.0 sy,  0.0 ni,100.0 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+MiB Mem : 171041.2 total, 162595.8 free,    593.9 used,   7851.6 buff/cache
+MiB Swap:      0.0 total,      0.0 free,      0.0 used. 168942.5 avail Mem
+
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+      1 root      20   0  167688  13012   8308 S   0.0   0.0   0:03.10 systemd
+      2 root      20   0       0      0      0 S   0.0   0.0   0:00.00 kthreadd
+      3 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_gp
+      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_par_gp
+      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 slub_flushwq
+      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 netns
+      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/0:0H-events_h+
+     10 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 mm_percpu_wq
+     11 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_rude_
+     12 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_trace
+     13 root      20   0       0      0      0 S   0.0   0.0   0:00.00 ksoftirqd/0
+     14 root      20   0       0      0      0 I   0.0   0.0   0:00.17 rcu_sched
+     15 root      rt   0       0      0      0 S   0.0   0.0   0:00.00 migration/0
+     16 root     -51   0       0      0      0 S   0.0   0.0   0:00.00 idle_inject/0
+     17 root      20   0       0      0      0 I   0.0   0.0   0:00.00 kworker/0:1-rcu_par_gp
+     18 root      20   0       0      0      0 S   0.0   0.0   0:00.00 cpuhp/0
+     19 root      20   0       0      0      0 S   0.0   0.0   0:00.00 cpuhp/1
+     20 root     -51   0       0      0      0 S   0.0   0.0   0:00.00 idle_inject/1
+     21 root      rt   0       0      0      0 S   0.0   0.0   0:00.24 migration/1
+     22 root      20   0       0      0      0 S   0.0   0.0   0:00.00 ksoftirqd/1
+     24 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/1:0H-events_h+
+     25 root      20   0       0      0      0 S   0.0   0.0   0:00.00 cpuhp/2
+     26 root     -51   0       0      0      0 S   0.0   0.0   0:00.00 idle_inject/2
+     27 root      rt   0       0      0      0 S   0.0   0.0   0:00.25 migration/2
+     28 root      20   0       0      0      0 S   0.0   0.0   0:00.00 ksoftirqd/2
+     30 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/2:0H-events_h+
+     31 root      20   0       0      0      0 S   0.0   0.0   0:00.00 cpuhp/3
+     32 root     -51   0       0      0      0 S   0.0   0.0   0:00.00 idle_inject/3
+     33 root      rt   0       0      0      0 S   0.0   0.0   0:00.25 migration/3
+     34 root      20   0       0      0      0 S   0.0   0.0   0:00.00 ksoftirqd/3
+     36 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/3:0H-events_h+
+     37 root      20   0       0      0      0 S   0.0   0.0   0:00.00 cpuhp/4
+     38 root     -51   0       0      0      0 S   0.0   0.0   0:00.00 idle_inject/4
+     39 root      rt   0       0      0      0 S   0.0   0.0   0:00.25 migration/4
+     40 root      20   0       0      0      0 S   0.0   0.0   0:00.00 ksoftirqd/4
+     42 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/4:0H-events_h+
+     43 root      20   0       0      0      0 S   0.0   0.0   0:00.00 cpuhp/5
+     44 root     -51   0       0      0      0 S   0.0   0.0   0:00.00 idle_inject/5
+     45 root      rt   0       0      0      0 S   0.0   0.0   0:00.26 migration/5
+     46 root      20   0       0      0      0 S   0.0   0.0   0:00.00 ksoftirqd/5
+     48 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/5:0H-events_h+
+     49 root      20   0       0      0      0 S   0.0   0.0   0:00.00 cpuhp/6
+     50 root     -51   0       0      0      0 S   0.0   0.0   0:00.00 idle_inject/6
+(base) root@rich-home-speaks-fin-03:~/cutlass/python#
+(base) root@rich-home-speaks-fin-03:~/cutlass/python# python setup_cutlass.py develop
+running develop
+/root/miniconda3/lib/python3.11/site-packages/setuptools/command/develop.py:42: EasyInstallDeprecationWarning: easy_install command is deprecated.
+!!
+
+        ********************************************************************************
+        Please avoid running ``setup.py`` and ``easy_install``.
+        Instead, use pypa/build, pypa/installer or other
+        standards-based tools.
+
+        See https://github.com/pypa/setuptools/issues/917 for details.
+        ********************************************************************************
+
+!!
+  easy_install.initialize_options(self)
+/root/miniconda3/lib/python3.11/site-packages/setuptools/_distutils/cmd.py:66: SetuptoolsDeprecationWarning: setup.py install is deprecated.
+!!
+
+        ********************************************************************************
+        Please avoid running ``setup.py`` directly.
+        Instead, use pypa/build, pypa/installer or other
+        standards-based tools.
+
+        See https://blog.ganssle.io/articles/2021/10/setup-py-deprecated.html for details.
+        ********************************************************************************
+
+!!
+  self.initialize_options()
+running egg_info
+creating cutlass_library.egg-info
+writing cutlass_library.egg-info/PKG-INFO
+writing dependency_links to cutlass_library.egg-info/dependency_links.txt
+writing top-level names to cutlass_library.egg-info/top_level.txt
+writing manifest file 'cutlass_library.egg-info/SOURCES.txt'
+reading manifest file 'cutlass_library.egg-info/SOURCES.txt'
+adding license file 'LICENSE.txt'
+writing manifest file 'cutlass_library.egg-info/SOURCES.txt'
+running build_ext
+Creating /root/miniconda3/lib/python3.11/site-packages/cutlass-library.egg-link (link to .)
+Adding cutlass-library 4.5.2 to easy-install.pth file
+
+Installed /root/cutlass/python
+Processing dependencies for cutlass-library==4.5.2
+Finished processing dependencies for cutlass-library==4.5.2
+running develop
+running egg_info
+creating pycute.egg-info
+writing pycute.egg-info/PKG-INFO
+writing dependency_links to pycute.egg-info/dependency_links.txt
+writing top-level names to pycute.egg-info/top_level.txt
+writing manifest file 'pycute.egg-info/SOURCES.txt'
+reading manifest file 'pycute.egg-info/SOURCES.txt'
+adding license file 'LICENSE.txt'
+writing manifest file 'pycute.egg-info/SOURCES.txt'
+running build_ext
+Creating /root/miniconda3/lib/python3.11/site-packages/pycute.egg-link (link to .)
+pycute 4.5.2 is already the active version in easy-install.pth
+
+Installed /root/cutlass/python
+Processing dependencies for pycute==4.5.2
+Finished processing dependencies for pycute==4.5.2
+/root/miniconda3/lib/python3.11/site-packages/setuptools/__init__.py:80: _DeprecatedInstaller: setuptools.installer and fetch_build_eggs are deprecated.
+!!
+
+        ********************************************************************************
+        Requirements should be satisfied by a PEP 517 installer.
+        If you are using pip, you can try `pip install --use-pep517`.
+        ********************************************************************************
+
+!!
+  dist.fetch_build_eggs(dist.setup_requires)
+running develop
+running egg_info
+creating cutlass_cppgen.egg-info
+writing cutlass_cppgen.egg-info/PKG-INFO
+writing dependency_links to cutlass_cppgen.egg-info/dependency_links.txt
+writing requirements to cutlass_cppgen.egg-info/requires.txt
+writing top-level names to cutlass_cppgen.egg-info/top_level.txt
+writing manifest file 'cutlass_cppgen.egg-info/SOURCES.txt'
+reading manifest file 'cutlass_cppgen.egg-info/SOURCES.txt'
+adding license file 'LICENSE.txt'
+writing manifest file 'cutlass_cppgen.egg-info/SOURCES.txt'
+running build_ext
+Creating /root/miniconda3/lib/python3.11/site-packages/cutlass-cppgen.egg-link (link to .)
+cutlass-cppgen 4.5.2 is already the active version in easy-install.pth
+
+Installed /root/cutlass/python
+Processing dependencies for cutlass-cppgen==4.5.2
+Searching for pydot
+Reading https://pypi.org/simple/pydot/
+Downloading https://files.pythonhosted.org/packages/7e/32/a7125fb28c4261a627f999d5fb4afff25b523800faed2c30979949d6facd/pydot-4.0.1-py3-none-any.whl#sha256=869c0efadd2708c0be1f916eb669f3d664ca684bc57ffb7ecc08e70d5e93fee6
+Best match: pydot 4.0.1
+Processing pydot-4.0.1-py3-none-any.whl
+Installing pydot-4.0.1-py3-none-any.whl to /root/miniconda3/lib/python3.11/site-packages
+Adding pydot 4.0.1 to easy-install.pth file
+
+Installed /root/miniconda3/lib/python3.11/site-packages/pydot-4.0.1-py3.11.egg
+Searching for treelib
+Reading https://pypi.org/simple/treelib/
+Downloading https://files.pythonhosted.org/packages/2e/24/32361f5d0e2eff7ff1881ac6833b6b090cfe34515b1ee9082636cbe69442/treelib-1.8.0-py3-none-any.whl#sha256=5235d1ebf988c5026f26ce6e5e0cd470007f16d4978185f5c9b3eee8a25aef81
+Best match: treelib 1.8.0
+Processing treelib-1.8.0-py3-none-any.whl
+Installing treelib-1.8.0-py3-none-any.whl to /root/miniconda3/lib/python3.11/site-packages
+Adding treelib 1.8.0 to easy-install.pth file
+detected new path './pydot-4.0.1-py3.11.egg'
+
+Installed /root/miniconda3/lib/python3.11/site-packages/treelib-1.8.0-py3.11.egg
+Searching for scikit-build
+Reading https://pypi.org/simple/scikit-build/
+Downloading https://files.pythonhosted.org/packages/9d/6d/57c59ee723ca0a08cfa37f6ee332c88692f38d3ef1a3ead049ff61959c20/scikit_build-0.19.0-py3-none-any.whl#sha256=956d1a179917e3994cb425662bb9e0ec052ef497995ce8e3f15b4030e02c5b94
+Best match: scikit-build 0.19.0
+Processing scikit_build-0.19.0-py3-none-any.whl
+Installing scikit_build-0.19.0-py3-none-any.whl to /root/miniconda3/lib/python3.11/site-packages
+Adding scikit-build 0.19.0 to easy-install.pth file
+detected new path './treelib-1.8.0-py3.11.egg'
+
+Installed /root/miniconda3/lib/python3.11/site-packages/scikit_build-0.19.0-py3.11.egg
+Searching for bfloat16
+Reading https://pypi.org/simple/bfloat16/
+Downloading https://files.pythonhosted.org/packages/47/95/53d4b577cbdb65292e32aed44abef047f04bda62feec7fd0fdbc25e5e43b/bfloat16-1.2.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl#sha256=e6e6034e028c4ab4b59fda5a60328d75c8526cddbaf58f2648fcff2edc2cddbb
+Best match: bfloat16 1.2.0
+Processing bfloat16-1.2.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
+Installing bfloat16-1.2.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl to /root/miniconda3/lib/python3.11/site-packages
+Adding bfloat16 1.2.0 to easy-install.pth file
+detected new path './scikit_build-0.19.0-py3.11.egg'
+
+Installed /root/miniconda3/lib/python3.11/site-packages/bfloat16-1.2.0-py3.11-linux-x86_64.eggSearching for pyparsing>=3.1.0
+Reading https://pypi.org/simple/pyparsing/
+Downloading https://files.pythonhosted.org/packages/10/bd/c038d7cc38edc1aa5bf91ab8068b63d4308c66c4c8bb3cbba7dfbc049f9c/pyparsing-3.3.2-py3-none-any.whl#sha256=850ba148bd908d7e2411587e247a1e4f0327839c40e2e5e6d05a007ecc69911d
+Best match: pyparsing 3.3.2
+Processing pyparsing-3.3.2-py3-none-any.whl
+Installing pyparsing-3.3.2-py3-none-any.whl to /root/miniconda3/lib/python3.11/site-packages
+Adding pyparsing 3.3.2 to easy-install.pth file
+detected new path './bfloat16-1.2.0-py3.11-linux-x86_64.egg'
+
+Installed /root/miniconda3/lib/python3.11/site-packages/pyparsing-3.3.2-py3.11.egg
+Searching for six>=1.13.0
+Reading https://pypi.org/simple/six/
+Downloading https://files.pythonhosted.org/packages/b7/ce/149a00dd41f10bc29e5921b496af8b574d8413afcd5e30dfa0ed46c2cc5e/six-1.17.0-py2.py3-none-any.whl#sha256=4721f391ed90541fddacab5acf947aa0d3dc7d27b2e1e8eda2be8970586c3274
+Best match: six 1.17.0
+Processing six-1.17.0-py2.py3-none-any.whl
+Installing six-1.17.0-py2.py3-none-any.whl to /root/miniconda3/lib/python3.11/site-packages
+Adding six 1.17.0 to easy-install.pth file
+detected new path './pyparsing-3.3.2-py3.11.egg'
+
+Installed /root/miniconda3/lib/python3.11/site-packages/six-1.17.0-py3.11.egg
+Searching for pybind11==3.0.4
+Best match: pybind11 3.0.4
+Processing pybind11-3.0.4-py3.11.egg
+Adding pybind11 3.0.4 to easy-install.pth file
+detected new path './six-1.17.0-py3.11.egg'
+Installing pybind11-config script to /root/miniconda3/bin
+
+Using /root/cutlass/python/.eggs/pybind11-3.0.4-py3.11.egg
+Searching for cuda-python==13.0.0
+Best match: cuda-python 13.0.0
+Adding cuda-python 13.0.0 to easy-install.pth file
+
+Using /root/miniconda3/lib/python3.11/site-packages
+Searching for wheel==0.46.3
+Best match: wheel 0.46.3
+Adding wheel 0.46.3 to easy-install.pth file
+Installing wheel script to /root/miniconda3/bin
+
+Using /root/miniconda3/lib/python3.11/site-packages
+Searching for setuptools==70.2.0
+Best match: setuptools 70.2.0
+Adding setuptools 70.2.0 to easy-install.pth file
+
+Using /root/miniconda3/lib/python3.11/site-packages
+Searching for packaging==26.0
+Best match: packaging 26.0
+Adding packaging 26.0 to easy-install.pth file
+
+Using /root/miniconda3/lib/python3.11/site-packages
+Searching for distro==1.9.0
+Best match: distro 1.9.0
+Adding distro 1.9.0 to easy-install.pth file
+Installing distro script to /root/miniconda3/bin
+
+Using /root/miniconda3/lib/python3.11/site-packages
+Searching for cuda-bindings==13.0.3
+Best match: cuda-bindings 13.0.3
+Adding cuda-bindings 13.0.3 to easy-install.pth file
+
+Using /root/miniconda3/lib/python3.11/site-packages
+Searching for cuda-pathfinder==1.5.5
+Best match: cuda-pathfinder 1.5.5
+Adding cuda-pathfinder 1.5.5 to easy-install.pth file
+
+Using /root/miniconda3/lib/python3.11/site-packages
+Finished processing dependencies for cutlass-cppgen==4.5.2
+(base) root@rich-home-speaks-fin-03:~/cutlass/python#
+(base) root@rich-home-speaks-fin-03:~/cutlass/python# python setup_cutlass.py develop
+running develop
+/root/miniconda3/lib/python3.11/site-packages/setuptools/command/develop.py:42: EasyInstallDeprecationWarning: easy_install command is deprecated.
+!!
+
+        ********************************************************************************
+        Please avoid running ``setup.py`` and ``easy_install``.
+        Instead, use pypa/build, pypa/installer or other
+        standards-based tools.
+
+        See https://github.com/pypa/setuptools/issues/917 for details.
+        ********************************************************************************
+
+!!
+  easy_install.initialize_options(self)
+/root/miniconda3/lib/python3.11/site-packages/setuptools/_distutils/cmd.py:66: SetuptoolsDeprecationWarning: setup.py install is deprecated.
+!!
+
+        ********************************************************************************
+        Please avoid running ``setup.py`` directly.
+        Instead, use pypa/build, pypa/installer or other
+        standards-based tools.
+
+        See https://blog.ganssle.io/articles/2021/10/setup-py-deprecated.html for details.
+        ********************************************************************************
+
+!!
+  self.initialize_options()
+running egg_info
+writing cutlass_library.egg-info/PKG-INFO
+writing dependency_links to cutlass_library.egg-info/dependency_links.txt
+writing top-level names to cutlass_library.egg-info/top_level.txt
+reading manifest file 'cutlass_library.egg-info/SOURCES.txt'
+adding license file 'LICENSE.txt'
+writing manifest file 'cutlass_library.egg-info/SOURCES.txt'
+running build_ext
+Creating /root/miniconda3/lib/python3.11/site-packages/cutlass-library.egg-link (link to .)
+cutlass-library 4.5.2 is already the active version in easy-install.pth
+
+Installed /root/cutlass/python
+Processing dependencies for cutlass-library==4.5.2
+Finished processing dependencies for cutlass-library==4.5.2
+running develop
+running egg_info
+writing pycute.egg-info/PKG-INFO
+writing dependency_links to pycute.egg-info/dependency_links.txt
+writing top-level names to pycute.egg-info/top_level.txt
+reading manifest file 'pycute.egg-info/SOURCES.txt'
+adding license file 'LICENSE.txt'
+writing manifest file 'pycute.egg-info/SOURCES.txt'
+running build_ext
+Creating /root/miniconda3/lib/python3.11/site-packages/pycute.egg-link (link to .)
+pycute 4.5.2 is already the active version in easy-install.pth
+
+Installed /root/cutlass/python
+Processing dependencies for pycute==4.5.2
+Finished processing dependencies for pycute==4.5.2
+/root/miniconda3/lib/python3.11/site-packages/setuptools/__init__.py:80: _DeprecatedInstaller: setuptools.installer and fetch_build_eggs are deprecated.
+!!
+
+        ********************************************************************************
+        Requirements should be satisfied by a PEP 517 installer.
+        If you are using pip, you can try `pip install --use-pep517`.
+        ********************************************************************************
+
+!!
+  dist.fetch_build_eggs(dist.setup_requires)
+running develop
+running egg_info
+writing cutlass_cppgen.egg-info/PKG-INFO
+writing dependency_links to cutlass_cppgen.egg-info/dependency_links.txt
+writing requirements to cutlass_cppgen.egg-info/requires.txt
+writing top-level names to cutlass_cppgen.egg-info/top_level.txt
+reading manifest file 'cutlass_cppgen.egg-info/SOURCES.txt'
+adding license file 'LICENSE.txt'
+writing manifest file 'cutlass_cppgen.egg-info/SOURCES.txt'
+running build_ext
+Creating /root/miniconda3/lib/python3.11/site-packages/cutlass-cppgen.egg-link (link to .)
+cutlass-cppgen 4.5.2 is already the active version in easy-install.pth
+
+Installed /root/cutlass/python
+Processing dependencies for cutlass-cppgen==4.5.2
+Searching for pydot==4.0.1
+Best match: pydot 4.0.1
+Processing pydot-4.0.1-py3.11.egg
+Adding pydot 4.0.1 to easy-install.pth file
+
+Using /root/miniconda3/lib/python3.11/site-packages/pydot-4.0.1-py3.11.egg
+Searching for treelib==1.8.0
+Best match: treelib 1.8.0
+Processing treelib-1.8.0-py3.11.egg
+Adding treelib 1.8.0 to easy-install.pth file
+
+Using /root/miniconda3/lib/python3.11/site-packages/treelib-1.8.0-py3.11.egg
+Searching for scikit-build==0.19.0
+Best match: scikit-build 0.19.0
+Processing scikit_build-0.19.0-py3.11.egg
+Adding scikit-build 0.19.0 to easy-install.pth file
+
+Using /root/miniconda3/lib/python3.11/site-packages/scikit_build-0.19.0-py3.11.egg
+Searching for pybind11==3.0.4
+Best match: pybind11 3.0.4
+Processing pybind11-3.0.4-py3.11.egg
+pybind11 3.0.4 is already the active version in easy-install.pth
+Installing pybind11-config script to /root/miniconda3/bin
+
+Using /root/cutlass/python/.eggs/pybind11-3.0.4-py3.11.egg
+Searching for cuda-python==13.0.0
+Best match: cuda-python 13.0.0
+Adding cuda-python 13.0.0 to easy-install.pth file
+
+Using /root/miniconda3/lib/python3.11/site-packages
+Searching for bfloat16==1.2.0
+Best match: bfloat16 1.2.0
+Processing bfloat16-1.2.0-py3.11-linux-x86_64.egg
+Adding bfloat16 1.2.0 to easy-install.pth file
+
+Using /root/miniconda3/lib/python3.11/site-packages/bfloat16-1.2.0-py3.11-linux-x86_64.egg
+Searching for pyparsing==3.3.2
+Best match: pyparsing 3.3.2
+Processing pyparsing-3.3.2-py3.11.egg
+Adding pyparsing 3.3.2 to easy-install.pth file
+
+Using /root/miniconda3/lib/python3.11/site-packages/pyparsing-3.3.2-py3.11.egg
+Searching for six==1.17.0
+Best match: six 1.17.0
+Processing six-1.17.0-py3.11.egg
+Adding six 1.17.0 to easy-install.pth file
+
+Using /root/miniconda3/lib/python3.11/site-packages/six-1.17.0-py3.11.egg
+Searching for wheel==0.46.3
+Best match: wheel 0.46.3
+Adding wheel 0.46.3 to easy-install.pth file
+Installing wheel script to /root/miniconda3/bin
+
+Using /root/miniconda3/lib/python3.11/site-packages
+Searching for setuptools==70.2.0
+Best match: setuptools 70.2.0
+Adding setuptools 70.2.0 to easy-install.pth file
+
+Using /root/miniconda3/lib/python3.11/site-packages
+Searching for packaging==26.0
+Best match: packaging 26.0
+Adding packaging 26.0 to easy-install.pth file
+
+Using /root/miniconda3/lib/python3.11/site-packages
+Searching for distro==1.9.0
+Best match: distro 1.9.0
+Adding distro 1.9.0 to easy-install.pth file
+Installing distro script to /root/miniconda3/bin
+
+Using /root/miniconda3/lib/python3.11/site-packages
+Searching for cuda-bindings==13.0.3
+Best match: cuda-bindings 13.0.3
+Adding cuda-bindings 13.0.3 to easy-install.pth file
+
+Using /root/miniconda3/lib/python3.11/site-packages
+Searching for cuda-pathfinder==1.5.5
+Best match: cuda-pathfinder 1.5.5
+Adding cuda-pathfinder 1.5.5 to easy-install.pth file
+
+Using /root/miniconda3/lib/python3.11/site-packages
+Finished processing dependencies for cutlass-cppgen==4.5.2
+(base) root@rich-home-speaks-fin-03:~/cutlass/python# python setup_pycute.py develop
+running develop
+/root/miniconda3/lib/python3.11/site-packages/setuptools/command/develop.py:42: EasyInstallDeprecationWarning: easy_install command is deprecated.
+!!
+
+        ********************************************************************************
+        Please avoid running ``setup.py`` and ``easy_install``.
+        Instead, use pypa/build, pypa/installer or other
+        standards-based tools.
+
+        See https://github.com/pypa/setuptools/issues/917 for details.
+        ********************************************************************************
+
+!!
+  easy_install.initialize_options(self)
+/root/miniconda3/lib/python3.11/site-packages/setuptools/_distutils/cmd.py:66: SetuptoolsDeprecationWarning: setup.py install is deprecated.
+!!
+
+        ********************************************************************************
+        Please avoid running ``setup.py`` directly.
+        Instead, use pypa/build, pypa/installer or other
+        standards-based tools.
+
+        See https://blog.ganssle.io/articles/2021/10/setup-py-deprecated.html for details.
+        ********************************************************************************
+
+!!
+  self.initialize_options()
+running egg_info
+writing pycute.egg-info/PKG-INFO
+writing dependency_links to pycute.egg-info/dependency_links.txt
+writing top-level names to pycute.egg-info/top_level.txt
+reading manifest file 'pycute.egg-info/SOURCES.txt'
+adding license file 'LICENSE.txt'
+writing manifest file 'pycute.egg-info/SOURCES.txt'
+running build_ext
+Creating /root/miniconda3/lib/python3.11/site-packages/pycute.egg-link (link to .)
+pycute 4.5.2 is already the active version in easy-install.pth
+
+Installed /root/cutlass/python
+Processing dependencies for pycute==4.5.2
+Finished processing dependencies for pycute==4.5.2
+(base) root@rich-home-speaks-fin-03:~/cutlass/python# python setup_library.py develop
+running develop
+/root/miniconda3/lib/python3.11/site-packages/setuptools/command/develop.py:42: EasyInstallDeprecationWarning: easy_install command is deprecated.
+!!
+
+        ********************************************************************************
+        Please avoid running ``setup.py`` and ``easy_install``.
+        Instead, use pypa/build, pypa/installer or other
+        standards-based tools.
+
+        See https://github.com/pypa/setuptools/issues/917 for details.
+        ********************************************************************************
+
+!!
+  easy_install.initialize_options(self)
+/root/miniconda3/lib/python3.11/site-packages/setuptools/_distutils/cmd.py:66: SetuptoolsDeprecationWarning: setup.py install is deprecated.
+!!
+
+        ********************************************************************************
+        Please avoid running ``setup.py`` directly.
+        Instead, use pypa/build, pypa/installer or other
+        standards-based tools.
+
+        See https://blog.ganssle.io/articles/2021/10/setup-py-deprecated.html for details.
+        ********************************************************************************
+
+!!
+  self.initialize_options()
+running egg_info
+writing cutlass_library.egg-info/PKG-INFO
+writing dependency_links to cutlass_library.egg-info/dependency_links.txt
+writing top-level names to cutlass_library.egg-info/top_level.txt
+reading manifest file 'cutlass_library.egg-info/SOURCES.txt'
+adding license file 'LICENSE.txt'
+writing manifest file 'cutlass_library.egg-info/SOURCES.txt'
+running build_ext
+Creating /root/miniconda3/lib/python3.11/site-packages/cutlass-library.egg-link (link to .)
+cutlass-library 4.5.2 is already the active version in easy-install.pth
+
+Installed /root/cutlass/python
+Processing dependencies for cutlass-library==4.5.2
+Finished processing dependencies for cutlass-library==4.5.2
+(base) root@rich-home-speaks-fin-03:~/cutlass/python# cd ..
+(base) root@rich-home-speaks-fin-03:~/cutlass# cd ..
+(base) root@rich-home-speaks-fin-03:~# ls
+cutlass  miniconda3  snap
+(base) root@rich-home-speaks-fin-03:~# cd ~
+(base) root@rich-home-speaks-fin-03:~# git clone https://github.com/liziwen-AI/NVFP4_GEMM.git
+Cloning into 'NVFP4_GEMM'...
+remote: Enumerating objects: 16, done.
+remote: Counting objects: 100% (16/16), done.
+remote: Compressing objects: 100% (12/12), done.
+remote: Total 16 (delta 5), reused 15 (delta 4), pack-reused 0 (from 0)
+Receiving objects: 100% (16/16), 12.52 KiB | 388.00 KiB/s, done.
+Resolving deltas: 100% (5/5), done.
+(base) root@rich-home-speaks-fin-03:~#
+(base) root@rich-home-speaks-fin-03:~# cd NVFP4_GEMM/
+(base) root@rich-home-speaks-fin-03:~/NVFP4_GEMM# ls
+install.sh  liz.py  reference.py  submission.py  task.py  task.yml  template.py  utils.py
+(base) root@rich-home-speaks-fin-03:~/NVFP4_GEMM# python liz.py
+Traceback (most recent call last):
+  File "/root/NVFP4_GEMM/liz.py", line 4, in <module>
+    from submission import custom_kernel
+  File "/root/NVFP4_GEMM/submission.py", line 7, in <module>
+    import cutlass
+ModuleNotFoundError: No module named 'cutlass'
+(base) root@rich-home-speaks-fin-03:~/NVFP4_GEMM# python -c "import cutlass; print(cutlass.__version__)"
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+ModuleNotFoundError: No module named 'cutlass'
+(base) root@rich-home-speaks-fin-03:~/NVFP4_GEMM# python -c "import sys; print('\n'.join(sys.path))"
+
+/root/miniconda3/lib/python311.zip
+/root/miniconda3/lib/python3.11
+/root/miniconda3/lib/python3.11/lib-dynload
+/root/miniconda3/lib/python3.11/site-packages
+/root/cutlass/python
+/root/miniconda3/lib/python3.11/site-packages/pydot-4.0.1-py3.11.egg
+/root/miniconda3/lib/python3.11/site-packages/treelib-1.8.0-py3.11.egg
+/root/miniconda3/lib/python3.11/site-packages/scikit_build-0.19.0-py3.11.egg
+/root/miniconda3/lib/python3.11/site-packages/bfloat16-1.2.0-py3.11-linux-x86_64.egg
+/root/miniconda3/lib/python3.11/site-packages/pyparsing-3.3.2-py3.11.egg
+/root/miniconda3/lib/python3.11/site-packages/six-1.17.0-py3.11.egg
+/root/cutlass/python/.eggs/pybind11-3.0.4-py3.11.egg
+(base) root@rich-home-speaks-fin-03:~/NVFP4_GEMM# ls -la /root/cutlass/pythonls -la /root/cutlass/python
+ls: cannot access '/root/cutlass/pythonls': No such file or directory
+/root/cutlass/python:
+total 80
+drwxr-xr-x 13 root root 4096 Jun 11 03:01 .
+drwxr-xr-x 12 root root 4096 Jun 11 02:58 ..
+drwxr-xr-x  3 root root 4096 Jun 11 03:01 .eggs
+drwxr-xr-x  3 root root 4096 Jun 11 02:58 CuTeDSL
+-rw-r--r--  1 root root 1547 Jun 11 02:58 LICENSE.txt
+-rw-r--r--  1 root root 9693 Jun 11 02:58 README.md
+drwxr-xr-x  2 root root 4096 Jun 11 03:01 __pycache__
+drwxr-xr-x  7 root root 4096 Jun 11 02:58 cutlass_cppgen
+drwxr-xr-x  2 root root 4096 Jun 11 03:01 cutlass_cppgen.egg-info
+drwxr-xr-x  2 root root 4096 Jun 11 02:58 cutlass_library
+drwxr-xr-x  2 root root 4096 Jun 11 03:01 cutlass_library.egg-info
+drwxr-xr-x  6 root root 4096 Jun 11 02:58 docs
+drwxr-xr-x  3 root root 4096 Jun 11 02:58 docs_src
+drwxr-xr-x  2 root root 4096 Jun 11 02:58 pycute
+drwxr-xr-x  2 root root 4096 Jun 11 03:01 pycute.egg-info
+-rw-r--r--  1 root root 2631 Jun 11 02:58 setup_cutlass.py
+-rw-r--r--  1 root root 2067 Jun 11 02:58 setup_library.py
+-rw-r--r--  1 root root 2045 Jun 11 02:58 setup_pycute.py
+(base) root@rich-home-speaks-fin-03:~/NVFP4_GEMM# cd /root/cutlass/python
+(base) root@rich-home-speaks-fin-03:~/cutlass/python# rm -rf *.egg-info build dist
+(base) root@rich-home-speaks-fin-03:~/cutlass/python# export CUTLASS_NVCC_ARCHS=100
+(base) root@rich-home-speaks-fin-03:~/cutlass/python# pip install -e .
+Obtaining file:///root/cutlass/python
+ERROR: file:///root/cutlass/python does not appear to be a Python project: neither 'setup.py' nor 'pyproject.toml' found.
+(base) root@rich-home-speaks-fin-03:~/cutlass/python# ln -s cutlass_cppgen cutlass
+(base) root@rich-home-speaks-fin-03:~/cutlass/python# ls -la cutlassls -la cutlass^C
+(base) root@rich-home-speaks-fin-03:~/cutlass/python# ls -la cutlass
+lrwxrwxrwx 1 root root 14 Jun 11 03:13 cutlass -> cutlass_cppgen
+(base) root@rich-home-speaks-fin-03:~/cutlass/python# python -c "import cutlass; print('🎉 成
+功导入！路径为:', cutlass.__file__)"
+🎉 成功导入！路径为: /root/cutlass/python/cutlass/__init__.py
+(base) root@rich-home-speaks-fin-03:~/cutlass/python# cd ~/NVFP4_GEMM
+(base) root@rich-home-speaks-fin-03:~/NVFP4_GEMM# python liz.py
+Traceback (most recent call last):
+  File "/root/NVFP4_GEMM/liz.py", line 4, in <module>
+    from submission import custom_kernel
+  File "/root/NVFP4_GEMM/submission.py", line 8, in <module>
+    import cutlass.cute as cute
+ModuleNotFoundError: No module named 'cutlass.cute'
+(base) root@rich-home-speaks-fin-03:~/NVFP4_GEMM# cd /root/cutlass/python
+(base) root@rich-home-speaks-fin-03:~/cutlass/python# ln -s /root/cutlass/python/pycute /root/cutlass/python/cutlass_cppgen/cute
+(base) root@rich-home-speaks-fin-03:~/cutlass/python#
+(base) root@rich-home-speaks-fin-03:~/cutlass/python# ls -la /root/cutlass/python/cutlass_cppgen/cute
+lrwxrwxrwx 1 root root 27 Jun 11 03:16 /root/cutlass/python/cutlass_cppgen/cute -> /root/cutlass/python/pycute
+(base) root@rich-home-speaks-fin-03:~/cutlass/python# python -c "import cutlass.cute as cute; print('🎉 CuTe 模块导入成功！')"
+🎉 CuTe 模块导入成功！
+(base) root@rich-home-speaks-fin-03:~/cutlass/python# cd ~/NVFP4_GEMM
+(base) root@rich-home-speaks-fin-03:~/NVFP4_GEMM#
+(base) root@rich-home-speaks-fin-03:~/NVFP4_GEMM# ^C
+(base) root@rich-home-speaks-fin-03:~/NVFP4_GEMM# python liz.py
+Traceback (most recent call last):
+  File "/root/NVFP4_GEMM/liz.py", line 4, in <module>
+    from submission import custom_kernel
+  File "/root/NVFP4_GEMM/submission.py", line 10, in <module>
+    import cutlass.pipeline as pipeline
+ModuleNotFoundError: No module named 'cutlass.pipeline'
+(base) root@rich-home-speaks-fin-03:~/NVFP4_GEMM# cd /root/cutlass/python
+(base) root@rich-home-speaks-fin-03:~/cutlass/python# rm -f cutlass
+(base) root@rich-home-speaks-fin-03:~/cutlass/python# rm -f cutlass_cppgen/cute
+(base) root@rich-home-speaks-fin-03:~/cutlass/python# export CUTLASS_NVCC_ARCHS=100
+(base) root@rich-home-speaks-fin-03:~/cutlass/python# python setup_cutlass.py develop --force-reinstall
+usage: setup_cutlass.py [global_opts] cmd1 [cmd1_opts] [cmd2 [cmd2_opts] ...]
+   or: setup_cutlass.py --help [cmd1 cmd2 ...]
+   or: setup_cutlass.py --help-commands
+   or: setup_cutlass.py cmd --help
+
+error: option --force-reinstall not recognized
+(base) root@rich-home-speaks-fin-03:~/cutlass/python# rm -rf build dist *.egg-info
+(base) root@rich-home-speaks-fin-03:~/cutlass/python# python setup_cutlass.py develop
+running develop
+/root/miniconda3/lib/python3.11/site-packages/setuptools/command/develop.py:42: EasyInstallDeprecationWarning: easy_install command is deprecated.
+!!
+
+        ********************************************************************************
+        Please avoid running ``setup.py`` and ``easy_install``.
+        Instead, use pypa/build, pypa/installer or other
+        standards-based tools.
+
+        See https://github.com/pypa/setuptools/issues/917 for details.
+        ********************************************************************************
+
+!!
+  easy_install.initialize_options(self)
+/root/miniconda3/lib/python3.11/site-packages/setuptools/_distutils/cmd.py:66: SetuptoolsDeprecationWarning: setup.py install is deprecated.
+!!
+
+        ********************************************************************************
+        Please avoid running ``setup.py`` directly.
+        Instead, use pypa/build, pypa/installer or other
+        standards-based tools.
+
+        See https://blog.ganssle.io/articles/2021/10/setup-py-deprecated.html for details.
+        ********************************************************************************
+
+!!
+  self.initialize_options()
+running egg_info
+creating cutlass_library.egg-info
+writing cutlass_library.egg-info/PKG-INFO
+writing dependency_links to cutlass_library.egg-info/dependency_links.txt
+writing top-level names to cutlass_library.egg-info/top_level.txt
+writing manifest file 'cutlass_library.egg-info/SOURCES.txt'
+reading manifest file 'cutlass_library.egg-info/SOURCES.txt'
+adding license file 'LICENSE.txt'
+writing manifest file 'cutlass_library.egg-info/SOURCES.txt'
+running build_ext
+Creating /root/miniconda3/lib/python3.11/site-packages/cutlass-library.egg-link (link to .)
+cutlass-library 4.5.2 is already the active version in easy-install.pth
+
+Installed /root/cutlass/python
+Processing dependencies for cutlass-library==4.5.2
+Finished processing dependencies for cutlass-library==4.5.2
+running develop
+running egg_info
+creating pycute.egg-info
+writing pycute.egg-info/PKG-INFO
+writing dependency_links to pycute.egg-info/dependency_links.txt
+writing top-level names to pycute.egg-info/top_level.txt
+writing manifest file 'pycute.egg-info/SOURCES.txt'
+reading manifest file 'pycute.egg-info/SOURCES.txt'
+adding license file 'LICENSE.txt'
+writing manifest file 'pycute.egg-info/SOURCES.txt'
+running build_ext
+Creating /root/miniconda3/lib/python3.11/site-packages/pycute.egg-link (link to .)
+pycute 4.5.2 is already the active version in easy-install.pth
+
+Installed /root/cutlass/python
+Processing dependencies for pycute==4.5.2
+Finished processing dependencies for pycute==4.5.2
+/root/miniconda3/lib/python3.11/site-packages/setuptools/__init__.py:80: _DeprecatedInstaller: setuptools.installer and fetch_build_eggs are deprecated.
+!!
+
+        ********************************************************************************
+        Requirements should be satisfied by a PEP 517 installer.
+        If you are using pip, you can try `pip install --use-pep517`.
+        ********************************************************************************
+
+!!
+  dist.fetch_build_eggs(dist.setup_requires)
+running develop
+running egg_info
+creating cutlass_cppgen.egg-info
+writing cutlass_cppgen.egg-info/PKG-INFO
+writing dependency_links to cutlass_cppgen.egg-info/dependency_links.txt
+writing requirements to cutlass_cppgen.egg-info/requires.txt
+writing top-level names to cutlass_cppgen.egg-info/top_level.txt
+writing manifest file 'cutlass_cppgen.egg-info/SOURCES.txt'
+reading manifest file 'cutlass_cppgen.egg-info/SOURCES.txt'
+adding license file 'LICENSE.txt'
+writing manifest file 'cutlass_cppgen.egg-info/SOURCES.txt'
+running build_ext
+Creating /root/miniconda3/lib/python3.11/site-packages/cutlass-cppgen.egg-link (link to .)
+cutlass-cppgen 4.5.2 is already the active version in easy-install.pth
+
+Installed /root/cutlass/python
+Processing dependencies for cutlass-cppgen==4.5.2
+Searching for pydot==4.0.1
+Best match: pydot 4.0.1
+Processing pydot-4.0.1-py3.11.egg
+Adding pydot 4.0.1 to easy-install.pth file
+
+Using /root/miniconda3/lib/python3.11/site-packages/pydot-4.0.1-py3.11.egg
+Searching for treelib==1.8.0
+Best match: treelib 1.8.0
+Processing treelib-1.8.0-py3.11.egg
+Adding treelib 1.8.0 to easy-install.pth file
+
+Using /root/miniconda3/lib/python3.11/site-packages/treelib-1.8.0-py3.11.egg
+Searching for scikit-build==0.19.0
+Best match: scikit-build 0.19.0
+Processing scikit_build-0.19.0-py3.11.egg
+Adding scikit-build 0.19.0 to easy-install.pth file
+
+Using /root/miniconda3/lib/python3.11/site-packages/scikit_build-0.19.0-py3.11.egg
+Searching for pybind11==3.0.4
+Best match: pybind11 3.0.4
+Processing pybind11-3.0.4-py3.11.egg
+pybind11 3.0.4 is already the active version in easy-install.pth
+Installing pybind11-config script to /root/miniconda3/bin
+
+Using /root/cutlass/python/.eggs/pybind11-3.0.4-py3.11.egg
+Searching for cuda-python==13.0.0
+Best match: cuda-python 13.0.0
+Adding cuda-python 13.0.0 to easy-install.pth file
+
+Using /root/miniconda3/lib/python3.11/site-packages
+Searching for bfloat16==1.2.0
+Best match: bfloat16 1.2.0
+Processing bfloat16-1.2.0-py3.11-linux-x86_64.egg
+Adding bfloat16 1.2.0 to easy-install.pth file
+
+Using /root/miniconda3/lib/python3.11/site-packages/bfloat16-1.2.0-py3.11-linux-x86_64.egg
+Searching for pyparsing==3.3.2
+Best match: pyparsing 3.3.2
+Processing pyparsing-3.3.2-py3.11.egg
+Adding pyparsing 3.3.2 to easy-install.pth file
+
+Using /root/miniconda3/lib/python3.11/site-packages/pyparsing-3.3.2-py3.11.egg
+Searching for six==1.17.0
+Best match: six 1.17.0
+Processing six-1.17.0-py3.11.egg
+Adding six 1.17.0 to easy-install.pth file
+
+Using /root/miniconda3/lib/python3.11/site-packages/six-1.17.0-py3.11.egg
+Searching for wheel==0.46.3
+Best match: wheel 0.46.3
+Adding wheel 0.46.3 to easy-install.pth file
+Installing wheel script to /root/miniconda3/bin
+
+Using /root/miniconda3/lib/python3.11/site-packages
+Searching for setuptools==70.2.0
+Best match: setuptools 70.2.0
+Adding setuptools 70.2.0 to easy-install.pth file
+
+Using /root/miniconda3/lib/python3.11/site-packages
+Searching for packaging==26.0
+Best match: packaging 26.0
+Adding packaging 26.0 to easy-install.pth file
+
+Using /root/miniconda3/lib/python3.11/site-packages
+Searching for distro==1.9.0
+Best match: distro 1.9.0
+Adding distro 1.9.0 to easy-install.pth file
+Installing distro script to /root/miniconda3/bin
+
+Using /root/miniconda3/lib/python3.11/site-packages
+Searching for cuda-bindings==13.0.3
+Best match: cuda-bindings 13.0.3
+Adding cuda-bindings 13.0.3 to easy-install.pth file
+
+Using /root/miniconda3/lib/python3.11/site-packages
+Searching for cuda-pathfinder==1.5.5
+Best match: cuda-pathfinder 1.5.5
+Adding cuda-pathfinder 1.5.5 to easy-install.pth file
+
+Using /root/miniconda3/lib/python3.11/site-packages
+Finished processing dependencies for cutlass-cppgen==4.5.2
+(base) root@rich-home-speaks-fin-03:~/cutlass/python# python setup_library.py develop
+running develop
+/root/miniconda3/lib/python3.11/site-packages/setuptools/command/develop.py:42: EasyInstallDeprecationWarning: easy_install command is deprecated.
+!!
+
+        ********************************************************************************
+        Please avoid running ``setup.py`` and ``easy_install``.
+        Instead, use pypa/build, pypa/installer or other
+        standards-based tools.
+
+        See https://github.com/pypa/setuptools/issues/917 for details.
+        ********************************************************************************
+
+!!
+  easy_install.initialize_options(self)
+/root/miniconda3/lib/python3.11/site-packages/setuptools/_distutils/cmd.py:66: SetuptoolsDeprecationWarning: setup.py install is deprecated.
+!!
+
+        ********************************************************************************
+        Please avoid running ``setup.py`` directly.
+        Instead, use pypa/build, pypa/installer or other
+        standards-based tools.
+
+        See https://blog.ganssle.io/articles/2021/10/setup-py-deprecated.html for details.
+        ********************************************************************************
+
+!!
+  self.initialize_options()
+running egg_info
+writing cutlass_library.egg-info/PKG-INFO
+writing dependency_links to cutlass_library.egg-info/dependency_links.txt
+writing top-level names to cutlass_library.egg-info/top_level.txt
+reading manifest file 'cutlass_library.egg-info/SOURCES.txt'
+adding license file 'LICENSE.txt'
+writing manifest file 'cutlass_library.egg-info/SOURCES.txt'
+running build_ext
+Creating /root/miniconda3/lib/python3.11/site-packages/cutlass-library.egg-link (link to .)
+cutlass-library 4.5.2 is already the active version in easy-install.pth
+
+Installed /root/cutlass/python
+Processing dependencies for cutlass-library==4.5.2
+Finished processing dependencies for cutlass-library==4.5.2
+(base) root@rich-home-speaks-fin-03:~/cutlass/python# python setup_pycute.py develop
+running develop
+/root/miniconda3/lib/python3.11/site-packages/setuptools/command/develop.py:42: EasyInstallDeprecationWarning: easy_install command is deprecated.
+!!
+
+        ********************************************************************************
+        Please avoid running ``setup.py`` and ``easy_install``.
+        Instead, use pypa/build, pypa/installer or other
+        standards-based tools.
+
+        See https://github.com/pypa/setuptools/issues/917 for details.
+        ********************************************************************************
+
+!!
+  easy_install.initialize_options(self)
+/root/miniconda3/lib/python3.11/site-packages/setuptools/_distutils/cmd.py:66: SetuptoolsDeprecationWarning: setup.py install is deprecated.
+!!
+
+        ********************************************************************************
+        Please avoid running ``setup.py`` directly.
+        Instead, use pypa/build, pypa/installer or other
+        standards-based tools.
+
+        See https://blog.ganssle.io/articles/2021/10/setup-py-deprecated.html for details.
+        ********************************************************************************
+
+!!
+  self.initialize_options()
+running egg_info
+writing pycute.egg-info/PKG-INFO
+writing dependency_links to pycute.egg-info/dependency_links.txt
+writing top-level names to pycute.egg-info/top_level.txt
+reading manifest file 'pycute.egg-info/SOURCES.txt'
+adding license file 'LICENSE.txt'
+writing manifest file 'pycute.egg-info/SOURCES.txt'
+running build_ext
+Creating /root/miniconda3/lib/python3.11/site-packages/pycute.egg-link (link to .)
+pycute 4.5.2 is already the active version in easy-install.pth
+
+Installed /root/cutlass/python
+Processing dependencies for pycute==4.5.2
+Finished processing dependencies for pycute==4.5.2
+(base) root@rich-home-speaks-fin-03:~/cutlass/python# python -c "import cutlass; import cutlass.cute; import cutlass.pipeline; import cutlass.backend; print('🎉 奇迹降临！所有子模块全部顺
+利导入！')"
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+ModuleNotFoundError: No module named 'cutlass'
+(base) root@rich-home-speaks-fin-03:~/cutlass/python# ls
+CuTeDSL      compiled_cache.db        cutlass_library.egg-info  pycute.egg-info
+LICENSE.txt  cutlass_cppgen           docs                      setup_cutlass.py
+README.md    cutlass_cppgen.egg-info  docs_src                  setup_library.py
+__pycache__  cutlass_library          pycute                    setup_pycute.py
+(base) root@rich-home-speaks-fin-03:~/cutlass/python# Connection to 86.38.182.132 closed by remote host.
+Connection to 86.38.182.132 closed.
+(base) PS C:\Users\lzw20> ^F
