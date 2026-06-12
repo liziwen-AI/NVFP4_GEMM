@@ -21,8 +21,6 @@ export CUTLASS_NVCC_ARCHS=100
 cd cutlass
 pip install numpy
 pip install -e .
-# 安装 CuTe DSL 包
-pip install -e .
 
 
 
