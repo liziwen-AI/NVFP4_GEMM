@@ -25,5 +25,4 @@ pip install nvidia-cutlass-dsl[cu13]
 
 cd ~
 cd NVFP4_GEMM
-python liz.py
-
+python -W error::DeprecationWarning liz.py

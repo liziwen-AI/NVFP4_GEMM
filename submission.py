@@ -512,6 +512,7 @@ def my_kernel(
     sfa_layout = blockscaled_utils.tile_atom_to_shape_SF(
         a_tensor.shape, sf_vec_size
     )
+    print(sfa_layout)
     sfa_tensor = cute.make_tensor(sfa_ptr, sfa_layout)
 
     # ((Atom_N, Rest_N),(Atom_K, Rest_K),RestL)
