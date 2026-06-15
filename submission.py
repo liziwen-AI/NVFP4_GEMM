@@ -59,6 +59,7 @@ def kernel(
     sfa_smem_layout_staged: cute.Layout,
     sfb_smem_layout_staged: cute.Layout,
     num_tma_load_bytes: cutlass.Constexpr[int],
+    num_tmem_alloc_cols: cutlass.Constexpr[int],
 ):
     """
     GPU device kernel performing the batched GEMM computation.
@@ -657,6 +658,7 @@ def my_kernel(
         
         # Pipeline synchronization parameter
         num_tma_load_bytes,         # Total bytes to load per TMA transaction (for barrier setup)
+        num_tmem_alloc_cols
     ).launch(
         grid=grid,
         block=[threads_per_cta, 1, 1],
