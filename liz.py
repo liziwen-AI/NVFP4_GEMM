@@ -2,6 +2,7 @@ import torch
 from task import input_t, output_t
 from utils import make_match_reference
 from submission import custom_kernel
+# from gau_nernst import custom_kernel
 
 # Scaling factor vector size
 sf_vec_size = 16
@@ -159,16 +160,41 @@ def generate_input(
     return (a_ref, b_ref, sfa_ref_cpu.to("cuda"), sfb_ref_cpu.to("cuda"), sfa_ref_permuted, sfb_ref_permuted, c_ref)
 
 
+# 构造测试数据（需要看 task.py 里 input_t 的定义）
+# 通常 data = (A, B, ..., SFA, SFB, C)
+
+def benchmark(data, warmup=10, iters=100):
+    # warmup
+    for _ in range(warmup):
+        out = custom_kernel(data)
+    torch.cuda.synchronize()
+    
+    start = torch.cuda.Event(enable_timing=True)
+    end   = torch.cuda.Event(enable_timing=True)
+    
+    start.record()
+    for _ in range(iters):
+        out = custom_kernel(data)
+    end.record()
+    torch.cuda.synchronize()
+    
+    ms = start.elapsed_time(end) / iters
+    return ms
+
+
 check_implementation = make_match_reference(ref_kernel, rtol=1e-03, atol=1e-03)
 
 m, n, k, l, seed = 128, 256, 256, 1, 1111
 data = generate_input(m, n, k, l, seed)
-my_output = custom_kernel(data)
-is_correct, error_msg = check_implementation(data, my_output)
-if is_correct:
-    print("🎉 恭喜！你的自定义算子实现与参考实现完全吻合，精度达标！")
-else:
-    print(f"❌ 验证失败！错误信息：{error_msg}")
+# my_output = custom_kernel(data)
+# is_correct, error_msg = check_implementation(data, my_output)
+# if is_correct:
+#     print("🎉 恭喜！你的自定义算子实现与参考实现完全吻合，精度达标！")
+# else:
+#     print(f"❌ 验证失败！错误信息：{error_msg}")
 
-    
+ms = benchmark(data)
+print()  
+
+
 
