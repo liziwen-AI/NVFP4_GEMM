@@ -624,6 +624,34 @@ def my_kernel(
         c_tensor.shape[2],
     )
 
+    # Debug: print kernel launch parameters
+    print(f"=== Kernel Launch Parameters ===")
+    print(f"grid: {grid}")
+    print(f"block: [{threads_per_cta}, 1, 1]")
+    print(f"cluster: (1, 1, 1)")
+    print(f"\n--- tiled_mma ---")
+    print(f"tiled_mma: {tiled_mma}")
+    print(f"\n--- TMA atoms ---")
+    print(f"tma_atom_a: {tma_atom_a}")
+    print(f"tma_atom_b: {tma_atom_b}")
+    print(f"tma_atom_sfa: {tma_atom_sfa}")
+    print(f"tma_atom_sfb: {tma_atom_sfb}")
+    print(f"\n--- TMA tensors ---")
+    print(f"tma_tensor_a: {tma_tensor_a}")
+    print(f"tma_tensor_b: {tma_tensor_b}")
+    print(f"tma_tensor_sfa: {tma_tensor_sfa}")
+    print(f"tma_tensor_sfb: {tma_tensor_sfb}")
+    print(f"\n--- Output tensor ---")
+    print(f"c_tensor: {c_tensor}")
+    print(f"\n--- SMEM layouts (staged) ---")
+    print(f"a_smem_layout_staged: {a_smem_layout_staged}")
+    print(f"b_smem_layout_staged: {b_smem_layout_staged}")
+    print(f"sfa_smem_layout_staged: {sfa_smem_layout_staged}")
+    print(f"sfb_smem_layout_staged: {sfb_smem_layout_staged}")
+    print(f"\n--- Pipeline ---")
+    print(f"num_tma_load_bytes: {num_tma_load_bytes}")
+    print(f"================================\n")
+
     # Launch the kernel
     kernel(
         # MMA (Matrix Multiply-Accumulate) configuration

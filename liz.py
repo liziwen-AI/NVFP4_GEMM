@@ -184,17 +184,17 @@ def benchmark(data, warmup=10, iters=100):
 
 check_implementation = make_match_reference(ref_kernel, rtol=1e-03, atol=1e-03)
 
-m, n, k, l, seed = 128, 256, 256, 1, 1111
+m, n, k, l, seed = 2304, 4608, 7168, 1, 1111
 data = generate_input(m, n, k, l, seed)
-# my_output = custom_kernel(data)
-# is_correct, error_msg = check_implementation(data, my_output)
-# if is_correct:
-#     print("🎉 恭喜！你的自定义算子实现与参考实现完全吻合，精度达标！")
-# else:
-#     print(f"❌ 验证失败！错误信息：{error_msg}")
+my_output = custom_kernel(data)
+is_correct, error_msg = check_implementation(data, my_output)
+if is_correct:
+    print("🎉 恭喜！你的自定义算子实现与参考实现完全吻合，精度达标！")
+else:
+    print(f"❌ 验证失败！错误信息：{error_msg}")
 
-ms = benchmark(data)
-print()  
-
+# ms = benchmark(data)
+# print(": 💯 ✅ ❌ ⚡ 🎯 🚀")  
+# print(f"custom_kernel time: {ms}")  
 
 
