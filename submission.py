@@ -347,6 +347,13 @@ def kernel(
         acc_empty = acc_producer.acquire_and_advance()
         # Set ACCUMULATE field to False for the first k_tile iteration
         tiled_mma.set(tcgen05.Field.ACCUMULATE, False)
+
+        cute.arch.printf("k_tile_cnt=%d\n", k_tile_cnt)
+        cute.arch.printf("tCrA size(mode0)=%d, size(mode1)=%d, size(mode2)=%d\n",
+                        cute.size(tCrA, mode=[0]),
+                        cute.size(tCrA, mode=[1]),
+                        cute.size(tCrA, mode=[2]))
+
         # Execute k_tile loop
         for k_tile in range(k_tile_cnt):
             # Wait for AB buffer empty
