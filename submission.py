@@ -424,6 +424,16 @@ def kernel(
                     tCtSFB[sf_kblock_coord].iterator,
                 )
 
+                cute.arch.printf("kblock_idx=%d, num_kblocks=%d\n", kblock_idx, num_kblocks)
+                cute.arch.printf("ab_full.index=%d\n", ab_full.index)
+                sliced = tCrA[kblock_coord]
+                cute.arch.printf("tCrA[kblock] size0=%d\n", cute.size(sliced, mode=[0]))
+                cute.arch.printf("tCtAcc size(mode0)=%d, size(mode1)=%d, size(mode2)=%d\n",
+                        cute.size(tCtAcc, mode=[0]),
+                        cute.size(tCtAcc, mode=[1]),
+                        cute.size(tCtAcc, mode=[2]))
+                cute.arch.printf("tiled_mma=%d\n",tiled_mma)
+
                 cute.gemm(
                     tiled_mma,
                     tCtAcc,
