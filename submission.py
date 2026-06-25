@@ -630,6 +630,8 @@ def my_kernel(
     b_copy_size = cute.size_in_bytes(ab_dtype, b_smem_layout)
     sfa_copy_size = cute.size_in_bytes(sf_dtype, sfa_smem_layout)
     sfb_copy_size = cute.size_in_bytes(sf_dtype, sfb_smem_layout)
+
+    print(f"a_copy_size={a_copy_size}, b_copy_size={b_copy_size}, sfa_copy_size={sfa_copy_size}, sfb_copy_size={sfb_copy_size}, atom_thr_size={atom_thr_size}")
     num_tma_load_bytes = (
         a_copy_size + b_copy_size + sfa_copy_size + sfb_copy_size
     ) * atom_thr_size
