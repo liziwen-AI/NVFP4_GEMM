@@ -424,15 +424,17 @@ def kernel(
                     tCtSFB[sf_kblock_coord].iterator,
                 )
 
-                cute.printf("kblock_idx=%d, num_kblocks=%d\n", kblock_idx, num_kblocks)
-                cute.printf("ab_full.index=%d\n", ab_full.index)
+                #cute.printf("kblock_idx=%d, num_kblocks=%d\n", kblock_idx, num_kblocks)
+                #cute.printf("ab_full.index=%d\n", ab_full.index)
                 sliced = tCrA[kblock_coord]
-                cute.printf("tCrA[kblock] size0=%d\n", cute.size(sliced, mode=[0]))
-                cute.printf("tCtAcc size(mode0)=%d, size(mode1)=%d, size(mode2)=%d\n",
-                        cute.size(tCtAcc, mode=[0]),
-                        cute.size(tCtAcc, mode=[1]),
-                        cute.size(tCtAcc, mode=[2]))
-                cute.printf("tiled_mma=%d\n",tiled_mma)
+                cute.print_tensor(sliced)
+                cute.print_tensor(tCtAcc)
+
+                #cute.printf("tCrA[kblock] size0=%d\n", cute.size(sliced, mode=[0]))
+                #cute.printf("tCtAcc size(mode0)=%d, size(mode1)=%d, size(mode2)=%d\n",
+                        # cute.size(tCtAcc, mode=[0]),
+                        # cute.size(tCtAcc, mode=[1]),
+                        # cute.size(tCtAcc, mode=[2]))
 
                 cute.gemm(
                     tiled_mma,
