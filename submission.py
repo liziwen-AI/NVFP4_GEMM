@@ -348,8 +348,8 @@ def kernel(
         # Set ACCUMULATE field to False for the first k_tile iteration
         tiled_mma.set(tcgen05.Field.ACCUMULATE, False)
 
-        cute.arch.printf("k_tile_cnt=%d\n", k_tile_cnt)
-        cute.arch.printf("tCrA size(mode0)=%d, size(mode1)=%d, size(mode2)=%d\n",
+        cute.printf("k_tile_cnt=%d\n", k_tile_cnt)
+        cute.printf("tCrA size(mode0)=%d, size(mode1)=%d, size(mode2)=%d\n",
                         cute.size(tCrA, mode=[0]),
                         cute.size(tCrA, mode=[1]),
                         cute.size(tCrA, mode=[2]))
@@ -424,15 +424,15 @@ def kernel(
                     tCtSFB[sf_kblock_coord].iterator,
                 )
 
-                cute.arch.printf("kblock_idx=%d, num_kblocks=%d\n", kblock_idx, num_kblocks)
-                cute.arch.printf("ab_full.index=%d\n", ab_full.index)
+                cute.printf("kblock_idx=%d, num_kblocks=%d\n", kblock_idx, num_kblocks)
+                cute.printf("ab_full.index=%d\n", ab_full.index)
                 sliced = tCrA[kblock_coord]
-                cute.arch.printf("tCrA[kblock] size0=%d\n", cute.size(sliced, mode=[0]))
-                cute.arch.printf("tCtAcc size(mode0)=%d, size(mode1)=%d, size(mode2)=%d\n",
+                cute.printf("tCrA[kblock] size0=%d\n", cute.size(sliced, mode=[0]))
+                cute.printf("tCtAcc size(mode0)=%d, size(mode1)=%d, size(mode2)=%d\n",
                         cute.size(tCtAcc, mode=[0]),
                         cute.size(tCtAcc, mode=[1]),
                         cute.size(tCtAcc, mode=[2]))
-                cute.arch.printf("tiled_mma=%d\n",tiled_mma)
+                cute.printf("tiled_mma=%d\n",tiled_mma)
 
                 cute.gemm(
                     tiled_mma,
@@ -631,7 +631,6 @@ def my_kernel(
     sfa_copy_size = cute.size_in_bytes(sf_dtype, sfa_smem_layout)
     sfb_copy_size = cute.size_in_bytes(sf_dtype, sfb_smem_layout)
 
-    print(f"a_copy_size={a_copy_size}, b_copy_size={b_copy_size}, sfa_copy_size={sfa_copy_size}, sfb_copy_size={sfb_copy_size}, atom_thr_size={atom_thr_size}")
     num_tma_load_bytes = (
         a_copy_size + b_copy_size + sfa_copy_size + sfb_copy_size
     ) * atom_thr_size
@@ -644,6 +643,11 @@ def my_kernel(
     )
 
     # Debug: print kernel launch parameters
+    print(f"a_copy_size={a_copy_size},     \n\
+            b_copy_size={b_copy_size},     \n\
+            sfa_copy_size={sfa_copy_size}, \n\
+            sfb_copy_size={sfb_copy_size}, \n\
+            atom_thr_size={atom_thr_size}")
     print(f"=== Kernel Launch Parameters ===")
     print(f"grid: {grid}")
     print(f"block: [{threads_per_cta}, 1, 1]")
