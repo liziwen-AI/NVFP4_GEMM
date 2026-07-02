@@ -16,7 +16,7 @@ pip install torch --index-url https://download.pytorch.org/whl/cu130
 
 pip install nvidia-cutlass-dsl[cu13]
 # python -c "import cutlass.cute as cute; print('OK')"
-# git clone  --recursive https://github.com/NVIDIA/cutlass.git
+git clone  --recursive https://github.com/NVIDIA/cutlass.git
 # export CUTLASS_NVCC_ARCHS=100
 # # 安装 CUTLASS 主包
 # cd cutlass
