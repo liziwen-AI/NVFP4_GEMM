@@ -3,6 +3,7 @@ from task import input_t, output_t
 from utils import make_match_reference
 from submission import custom_kernel
 # from gau_nernst import custom_kernel
+# from CatsRCool import custom_kernel
 
 # Scaling factor vector size
 sf_vec_size = 16
