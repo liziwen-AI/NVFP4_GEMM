@@ -72,6 +72,8 @@ def kernel(
     # Coords inside cluster
     bidx, bidy, bidz = cute.arch.block_idx()
 
+    print("cute.size(tiled_mma.thr_id.shape)=", cute.size(tiled_mma.thr_id.shape))
+
     # Coords outside cluster
     cta_coord = (bidx, bidy, bidz)
     mma_tile_coord_mnl = (
@@ -120,6 +122,9 @@ def kernel(
         byte_alignment=128,
     )
 
+    print("sA.layout=", sA.layout)
+    print("sSFA.layout=", sSFA.layout)
+
     #
     # Initialize mainloop ab_pipeline, acc_pipeline and their states
     #
@@ -165,6 +170,10 @@ def kernel(
     )
     k_tile_cnt = cute.size(gA_mkl, mode=[3])
 
+    print("gA_mkl=",gA_mkl.layout)
+    print("gSFA_mkl=",gSFA_mkl.layout)
+    print("gC_mnl=",gC_mnl.layout)
+
     #
     # Partition global tensor for TiledMMA_A/B/SFA/SFB/C
     #
@@ -181,6 +190,12 @@ def kernel(
     # (MMA, MMA_M, MMA_N, RestM, RestN, RestL)
     tCgC = thr_mma.partition_C(gC_mnl)
 
+    print("tCgA=", tCgA.layout)
+    print("tCgB=", tCgB.layout)
+    print("tCgSFA=", tCgSFA.layout)
+    print("tCgSFB=", tCgSFB.layout)
+    print("tCgC=", tCgC.layout)
+
     #
     # Partition global/shared tensor for TMA load A/B/SFA/SFB
     #
@@ -194,6 +209,8 @@ def kernel(
         cute.group_modes(sA, 0, 3),
         cute.group_modes(tCgA, 0, 3),
     )
+    print("tAsA=", tAsA.layout)
+    print("tAgA=", tAgA.layout)
     # TMA Partition_S/D for B
     # ((atom_v, rest_v), STAGE)
     # ((atom_v, rest_v), RestN, RestK, RestL)
@@ -214,8 +231,12 @@ def kernel(
         cute.group_modes(sSFA, 0, 3),
         cute.group_modes(tCgSFA, 0, 3),
     )
+    print("tAsSFA(before filter_zeros)=", tAsSFA.layout)
+    print("tAgSFA(before filter_zeros)=", tAgSFA.layout)
     tAsSFA = cute.filter_zeros(tAsSFA)
     tAgSFA = cute.filter_zeros(tAgSFA)
+    print("tAsSFA(after filter_zeros)=", tAsSFA.layout)
+    print("tAgSFA(after filter_zeros)=", tAgSFA.layout)
     # TMA Partition_S/D for SFB
     # ((atom_v, rest_v), STAGE)
     # ((atom_v, rest_v), RestN, RestK, RestL)
@@ -348,11 +369,12 @@ def kernel(
         # Set ACCUMULATE field to False for the first k_tile iteration
         tiled_mma.set(tcgen05.Field.ACCUMULATE, False)
 
-        cute.printf("k_tile_cnt=%d\n", k_tile_cnt)
-        cute.printf("tCrA size(mode0)=%d, size(mode1)=%d, size(mode2)=%d\n",
-                        cute.size(tCrA, mode=[0]),
-                        cute.size(tCrA, mode=[1]),
-                        cute.size(tCrA, mode=[2]))
+        # cute.printf("k_tile_cnt=%d", k_tile_cnt)
+        # cute.printf("tCrA size(mode0)=%d, size(mode1)=%d, size(mode2)=%d, size(mode3)=%d",
+        #                 cute.size(tCrA, mode=[0]),
+        #                 cute.size(tCrA, mode=[1]),
+        #                 cute.size(tCrA, mode=[2]),
+        #                 cute.size(tCrA, mode=[3]))
 
         # Execute k_tile loop
         for k_tile in range(k_tile_cnt):
@@ -426,9 +448,9 @@ def kernel(
 
                 #cute.printf("kblock_idx=%d, num_kblocks=%d\n", kblock_idx, num_kblocks)
                 #cute.printf("ab_full.index=%d\n", ab_full.index)
-                sliced = tCrA[kblock_coord]
-                cute.print_tensor(sliced)
-                cute.print_tensor(tCtAcc)
+                # sliced = tCrA[kblock_coord]
+                # cute.print_tensor(sliced)
+                # cute.print_tensor(tCtAcc)
 
                 #cute.printf("tCrA[kblock] size0=%d\n", cute.size(sliced, mode=[0]))
                 #cute.printf("tCtAcc size(mode0)=%d, size(mode1)=%d, size(mode2)=%d\n",
@@ -644,38 +666,38 @@ def my_kernel(
         c_tensor.shape[2],
     )
 
-    # Debug: print kernel launch parameters
-    print(f"a_copy_size={a_copy_size},     \n\
-            b_copy_size={b_copy_size},     \n\
-            sfa_copy_size={sfa_copy_size}, \n\
-            sfb_copy_size={sfb_copy_size}, \n\
-            atom_thr_size={atom_thr_size}")
-    print(f"=== Kernel Launch Parameters ===")
-    print(f"grid: {grid}")
-    print(f"block: [{threads_per_cta}, 1, 1]")
-    print(f"cluster: (1, 1, 1)")
-    print(f"\n--- tiled_mma ---")
-    print(f"tiled_mma: {tiled_mma}")
-    print(f"\n--- TMA atoms ---")
-    print(f"tma_atom_a: {tma_atom_a}")
-    print(f"tma_atom_b: {tma_atom_b}")
-    print(f"tma_atom_sfa: {tma_atom_sfa}")
-    print(f"tma_atom_sfb: {tma_atom_sfb}")
-    print(f"\n--- TMA tensors ---")
-    print(f"tma_tensor_a: {tma_tensor_a}")
-    print(f"tma_tensor_b: {tma_tensor_b}")
-    print(f"tma_tensor_sfa: {tma_tensor_sfa}")
-    print(f"tma_tensor_sfb: {tma_tensor_sfb}")
-    print(f"\n--- Output tensor ---")
-    print(f"c_tensor: {c_tensor}")
-    print(f"\n--- SMEM layouts (staged) ---")
-    print(f"a_smem_layout_staged: {a_smem_layout_staged}")
-    print(f"b_smem_layout_staged: {b_smem_layout_staged}")
-    print(f"sfa_smem_layout_staged: {sfa_smem_layout_staged}")
-    print(f"sfb_smem_layout_staged: {sfb_smem_layout_staged}")
-    print(f"\n--- Pipeline ---")
-    print(f"num_tma_load_bytes: {num_tma_load_bytes}")
-    print(f"================================\n")
+    # # Debug: print kernel launch parameters
+    # print(f"a_copy_size={a_copy_size},     \n\
+    #         b_copy_size={b_copy_size},     \n\
+    #         sfa_copy_size={sfa_copy_size}, \n\
+    #         sfb_copy_size={sfb_copy_size}, \n\
+    #         atom_thr_size={atom_thr_size}")
+    # print(f"=== Kernel Launch Parameters ===")
+    # print(f"grid: {grid}")
+    # print(f"block: [{threads_per_cta}, 1, 1]")
+    # print(f"cluster: (1, 1, 1)")
+    # print(f"\n--- tiled_mma ---")
+    # print(f"tiled_mma: {tiled_mma}")
+    # print(f"\n--- TMA atoms ---")
+    # print(f"tma_atom_a: {tma_atom_a}")
+    # print(f"tma_atom_b: {tma_atom_b}")
+    # print(f"tma_atom_sfa: {tma_atom_sfa}")
+    # print(f"tma_atom_sfb: {tma_atom_sfb}")
+    # print(f"\n--- TMA tensors ---")
+    # print(f"tma_tensor_a: {tma_tensor_a}")
+    # print(f"tma_tensor_b: {tma_tensor_b}")
+    # print(f"tma_tensor_sfa: {tma_tensor_sfa}")
+    # print(f"tma_tensor_sfb: {tma_tensor_sfb}")
+    # print(f"\n--- Output tensor ---")
+    # print(f"c_tensor: {c_tensor}")
+    # print(f"\n--- SMEM layouts (staged) ---")
+    # print(f"a_smem_layout_staged: {a_smem_layout_staged}")
+    # print(f"b_smem_layout_staged: {b_smem_layout_staged}")
+    # print(f"sfa_smem_layout_staged: {sfa_smem_layout_staged}")
+    # print(f"sfb_smem_layout_staged: {sfb_smem_layout_staged}")
+    # print(f"\n--- Pipeline ---")
+    # print(f"num_tma_load_bytes: {num_tma_load_bytes}")
+    # print(f"================================\n")
 
     # Launch the kernel
     kernel(
