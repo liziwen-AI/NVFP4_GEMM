@@ -1045,7 +1045,7 @@ class Sm100BlockScaledDenseGemmKernel:
         # (T2R, T2R_M, T2R_N, EPI_M, EPI_N, RestM, RestN, RestL)
         tTR_gC = thr_copy_t2r.partition_D(gC_mnl_epi)
         # (T2R, T2R_M, T2R_N)
-        tTR_rAcc = cute.make_fragment(
+        tTR_rAcc = cute.make_fragment_like(
             tTR_gC[(None, None, None, 0, 0, 0, 0, 0)], self.acc_dtype
         )
         return tiled_copy_t2r, tTR_tAcc, tTR_rAcc
