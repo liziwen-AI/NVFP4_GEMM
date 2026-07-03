@@ -72,7 +72,7 @@ def kernel(
     # Coords inside cluster
     bidx, bidy, bidz = cute.arch.block_idx()
 
-    print("cute.size(tiled_mma.thr_id.shape)=", cute.size(tiled_mma.thr_id.shape))
+    # print("cute.size(tiled_mma.thr_id.shape)=", cute.size(tiled_mma.thr_id.shape))
 
     # Coords outside cluster
     cta_coord = (bidx, bidy, bidz)
@@ -122,8 +122,8 @@ def kernel(
         byte_alignment=128,
     )
 
-    print("sA.layout=", sA.layout)
-    print("sSFA.layout=", sSFA.layout)
+    # print("sA.layout=", sA.layout)
+    # print("sSFA.layout=", sSFA.layout)
 
     #
     # Initialize mainloop ab_pipeline, acc_pipeline and their states
@@ -170,9 +170,9 @@ def kernel(
     )
     k_tile_cnt = cute.size(gA_mkl, mode=[3])
 
-    print("gA_mkl=",gA_mkl.layout)
-    print("gSFA_mkl=",gSFA_mkl.layout)
-    print("gC_mnl=",gC_mnl.layout)
+    # print("gA_mkl=",gA_mkl.layout)
+    # print("gSFA_mkl=",gSFA_mkl.layout)
+    # print("gC_mnl=",gC_mnl.layout)
 
     #
     # Partition global tensor for TiledMMA_A/B/SFA/SFB/C
@@ -190,11 +190,11 @@ def kernel(
     # (MMA, MMA_M, MMA_N, RestM, RestN, RestL)
     tCgC = thr_mma.partition_C(gC_mnl)
 
-    print("tCgA=", tCgA.layout)
-    print("tCgB=", tCgB.layout)
-    print("tCgSFA=", tCgSFA.layout)
-    print("tCgSFB=", tCgSFB.layout)
-    print("tCgC=", tCgC.layout)
+    # print("tCgA=", tCgA.layout)
+    # print("tCgB=", tCgB.layout)
+    # print("tCgSFA=", tCgSFA.layout)
+    # print("tCgSFB=", tCgSFB.layout)
+    # print("tCgC=", tCgC.layout)
 
     #
     # Partition global/shared tensor for TMA load A/B/SFA/SFB
@@ -209,8 +209,8 @@ def kernel(
         cute.group_modes(sA, 0, 3),
         cute.group_modes(tCgA, 0, 3),
     )
-    print("tAsA=", tAsA.layout)
-    print("tAgA=", tAgA.layout)
+    # print("tAsA=", tAsA.layout)
+    # print("tAgA=", tAgA.layout)
     # TMA Partition_S/D for B
     # ((atom_v, rest_v), STAGE)
     # ((atom_v, rest_v), RestN, RestK, RestL)
@@ -231,12 +231,12 @@ def kernel(
         cute.group_modes(sSFA, 0, 3),
         cute.group_modes(tCgSFA, 0, 3),
     )
-    print("tAsSFA(before filter_zeros)=", tAsSFA.layout)
-    print("tAgSFA(before filter_zeros)=", tAgSFA.layout)
+    # print("tAsSFA(before filter_zeros)=", tAsSFA.layout)
+    # print("tAgSFA(before filter_zeros)=", tAgSFA.layout)
     tAsSFA = cute.filter_zeros(tAsSFA)
     tAgSFA = cute.filter_zeros(tAgSFA)
-    print("tAsSFA(after filter_zeros)=", tAsSFA.layout)
-    print("tAgSFA(after filter_zeros)=", tAgSFA.layout)
+    # print("tAsSFA(after filter_zeros)=", tAsSFA.layout)
+    # print("tAgSFA(after filter_zeros)=", tAgSFA.layout)
     # TMA Partition_S/D for SFB
     # ((atom_v, rest_v), STAGE)
     # ((atom_v, rest_v), RestN, RestK, RestL)
@@ -369,6 +369,7 @@ def kernel(
         # Set ACCUMULATE field to False for the first k_tile iteration
         tiled_mma.set(tcgen05.Field.ACCUMULATE, False)
 
+        # if tidx == 0 and bidx == 0 and bidy == 0:
         # cute.printf("k_tile_cnt=%d", k_tile_cnt)
         # cute.printf("tCrA size(mode0)=%d, size(mode1)=%d, size(mode2)=%d, size(mode3)=%d",
         #                 cute.size(tCrA, mode=[0]),
