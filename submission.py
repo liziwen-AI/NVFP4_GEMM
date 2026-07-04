@@ -332,6 +332,18 @@ def kernel(
     )
     # ((ATOM_V, REST_V), Rest_Tiler, MMA_MN, MMA_K)
     tCtSFA_compact_s2t = thr_copy_s2t_sfa.partition_D(tCtSFA_compact)
+    print("tCtSFA_compact_s2t.layout.shape=",tCtSFA_compact_s2t.layout.shape)
+    if warp_idx == 0 and tidx == 0 and bidx == 0 and bidy == 0 and bidz == 0:
+        cute.printf(
+            "tCtSFA_compact_s2t shape = (%d,%d) %d %d\n",
+            cute.size(tCtSFA_compact_s2t, mode=[0, 0]),
+            cute.size(tCtSFA_compact_s2t, mode=[0, 1]),
+            cute.size(tCtSFA_compact_s2t, mode=[1]),
+            cute.size(tCtSFA_compact_s2t, mode=[2]),
+            cute.size(tCtSFA_compact_s2t, mode=[3]),
+        )
+
+
 
     # (MMA, MMA_MN, MMA_K, STAGE)
     tCsSFB_compact = cute.filter_zeros(sSFB)
