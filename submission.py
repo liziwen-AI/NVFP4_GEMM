@@ -332,16 +332,16 @@ def kernel(
     )
     # ((ATOM_V, REST_V), Rest_Tiler, MMA_MN, MMA_K)
     tCtSFA_compact_s2t = thr_copy_s2t_sfa.partition_D(tCtSFA_compact)
-    print("tCtSFA_compact_s2t.layout.shape=",tCtSFA_compact_s2t.layout.shape)
-    if warp_idx == 0 and tidx == 0 and bidx == 0 and bidy == 0 and bidz == 0:
-        cute.printf(
-            "tCtSFA_compact_s2t shape = (%d,%d) %d %d\n",
-            cute.size(tCtSFA_compact_s2t, mode=[0, 0]),
-            cute.size(tCtSFA_compact_s2t, mode=[0, 1]),
-            cute.size(tCtSFA_compact_s2t, mode=[1]),
-            cute.size(tCtSFA_compact_s2t, mode=[2]),
-            cute.size(tCtSFA_compact_s2t, mode=[3]),
-        )
+    # print("tCtSFA_compact_s2t.layout.shape=",tCtSFA_compact_s2t.layout.shape)
+    # if warp_idx == 0 and tidx == 0 and bidx == 0 and bidy == 0 and bidz == 0:
+    #     cute.printf(
+    #         "tCtSFA_compact_s2t shape = (%d,%d) %d %d %d\n",
+    #         cute.size(tCtSFA_compact_s2t, mode=[0, 0]),
+    #         cute.size(tCtSFA_compact_s2t, mode=[0, 1]),
+    #         cute.size(tCtSFA_compact_s2t, mode=[1]),
+    #         cute.size(tCtSFA_compact_s2t, mode=[2]),
+    #         cute.size(tCtSFA_compact_s2t, mode=[3]),
+    #     )
 
 
 
@@ -508,6 +508,29 @@ def kernel(
     # STG Atom
     simt_atom = cute.make_copy_atom(cute.nvgpu.CopyUniversalOp(), c_dtype)
     tTR_gC = tTR_gC[(None, None, None, None, *mma_tile_coord_mnl)]
+
+    # ==================== 插入：重要维度打印 ====================
+    # 只允许第一个线程块 (0,0,0) 的第 0 个线程打印，防止日志刷屏
+    if tidx == 0 and bidx == 0 and bidy == 0 and bidz == 0:
+        cute.printf("========= Epilogue Tensors Layout & Shape =========\n")
+        
+        cute.printf("tCtAcc (TMEM Accumulator) Layout:\n")
+        cute.print_tensor(tCtAcc)
+        cute.print(tCtAcc.layout)
+        
+        cute.printf("\ntTR_tAcc (Thread-partitioned TMEM Source) Layout:\n")
+        cute.print_tensor(tTR_tAcc)
+        
+        cute.printf("\ntTR_gC (Thread-partitioned Global Dest) Layout:\n")
+        cute.print_tensor(tTR_gC)
+        
+        cute.printf("\ntTR_rAcc (Register Accumulator Buffer) Layout:\n")
+        cute.print_tensor(tTR_rAcc)
+        
+        cute.printf("\ntTR_rC (Register Output Type Buffer) Layout:\n")
+        cute.print_tensor(tTR_rC)
+        cute.printf("====================================================\n")
+    # ==========================================================
 
     # Wait for accumulator buffer full
     acc_full = acc_consumer.wait_and_advance()

@@ -161,10 +161,6 @@ def generate_input(
 
     return (a_ref, b_ref, sfa_ref_cpu.to("cuda"), sfb_ref_cpu.to("cuda"), sfa_ref_permuted, sfb_ref_permuted, c_ref)
 
-
-# 构造测试数据（需要看 task.py 里 input_t 的定义）
-# 通常 data = (A, B, ..., SFA, SFB, C)
-
 def benchmark(data, warmup=10, iters=100):
 
     my_output = custom_kernel(data)
@@ -191,6 +187,92 @@ def benchmark(data, warmup=10, iters=100):
     ms = start.elapsed_time(end) / iters
     return ms
 
+# 构造测试数据（需要看 task.py 里 input_t 的定义）
+# 通常 data = (A, B, ..., SFA, SFB, C)
+
+def benchmark_new(data, warmup=10, iters=100, flush_l2=True, l2_flush_size_mb=256):
+    """
+    对 custom_kernel 做正确性验证 + 性能测试。
+
+    改进点：
+    1. 正确性检查只做一次，避免重复。
+    2. 每次迭代前可选地 flush L2 cache，避免多次迭代命中同一份数据的 cache，
+       导致测出的耗时比真实场景（cache miss）偏乐观。
+    3. 用每次迭代单独的 CUDA Event 记录耗时，最后统计中位数/均值/标准差，
+       而不是只给一个粗略的总时间/iters。
+    4. 顺带算出 TFLOPS，方便和 roofline 模型对比。
+    """
+    # ---- 正确性验证（只做一次） ----
+    my_output = custom_kernel(data)
+    is_correct, error_msg = check_implementation(data, my_output)
+    if is_correct:
+        print("🎉 恭喜！你的自定义算子实现与参考实现完全吻合，精度达标！")
+    else:
+        print(f"❌ 验证失败！错误信息：{error_msg}")
+        return None
+
+    # ---- 用于 flush L2 cache 的 dummy buffer ----
+    # 思路：在每次 kernel 调用前，读写一块明显大于 L2 cache 容量的显存，
+    # 把 A/B/C 等真正关心的数据从 L2 中挤出去，模拟真实场景下的 cache miss。
+    l2_flush_buffer = None
+    if flush_l2:
+        numel = (l2_flush_size_mb * 1024 * 1024) // 4  # float32 元素个数
+        l2_flush_buffer = torch.empty(numel, dtype=torch.float32, device="cuda")
+
+    def _flush_l2():
+        if l2_flush_buffer is not None:
+            l2_flush_buffer.fill_(1.0)
+
+    # ---- warmup ----
+    for _ in range(warmup):
+        _flush_l2()
+        _ = custom_kernel(data)
+    torch.cuda.synchronize()
+
+    # ---- 正式计时：每次迭代单独记录 ----
+    start_events = [torch.cuda.Event(enable_timing=True) for _ in range(iters)]
+    end_events = [torch.cuda.Event(enable_timing=True) for _ in range(iters)]
+
+    for i in range(iters):
+        _flush_l2()
+        start_events[i].record()
+        _ = custom_kernel(data)
+        end_events[i].record()
+    torch.cuda.synchronize()
+
+    times_ms = [start_events[i].elapsed_time(end_events[i]) for i in range(iters)]
+    times_ms.sort()
+
+    mean_ms = sum(times_ms) / len(times_ms)
+    median_ms = times_ms[len(times_ms) // 2]
+    p90_ms = times_ms[int(len(times_ms) * 0.9)]
+    std_ms = (sum((t - mean_ms) ** 2 for t in times_ms) / len(times_ms)) ** 0.5
+    min_ms = times_ms[0]
+    max_ms = times_ms[-1]
+
+    # ---- 计算 TFLOPS（GEMM: 2*M*N*K*L 次浮点运算） ----
+    a_ref, b_ref, _, _, _, _, c_ref = data
+    m_dim, k_dim, l_dim = a_ref.shape
+    n_dim = b_ref.shape[0]
+    flops = 2 * m_dim * n_dim * k_dim * l_dim
+    tflops_mean = flops / (mean_ms * 1e-3) / 1e12
+    tflops_median = flops / (median_ms * 1e-3) / 1e12
+
+    print(f"迭代次数: {iters}  (L2 flush: {'开启' if flush_l2 else '关闭'})")
+    print(f"耗时(ms): mean={mean_ms:.4f}  median={median_ms:.4f}  "
+          f"min={min_ms:.4f}  max={max_ms:.4f}  p90={p90_ms:.4f}  std={std_ms:.4f}")
+    print(f"TFLOPS: mean={tflops_mean:.2f}  median={tflops_median:.2f}")
+
+    return {
+        "mean_ms": mean_ms,
+        "median_ms": median_ms,
+        "min_ms": min_ms,
+        "max_ms": max_ms,
+        "p90_ms": p90_ms,
+        "std_ms": std_ms,
+        "tflops_mean": tflops_mean,
+        "tflops_median": tflops_median,
+    }
 
 check_implementation = make_match_reference(ref_kernel, rtol=1e-03, atol=1e-03)
 
