@@ -162,7 +162,13 @@ def generate_input(
 
     return (a_ref, b_ref, sfa_ref_cpu.to("cuda"), sfb_ref_cpu.to("cuda"), sfa_ref_permuted, sfb_ref_permuted, c_ref)
 
-def benchmark(data, warmup=10, iters=100):
+def benchmark(data, warmup=10, iters=100, l2_flush_size_mb=512):
+
+    numel = (l2_flush_size_mb * 1024 * 1024) // 4
+    l2_flush_buffer = torch.empty(numel, dtype=torch.float32, device="cuda")
+
+    def _flush_l2():
+        l2_flush_buffer.fill_(1.0)
 
     my_output = custom_kernel(data)
     is_correct, error_msg = check_implementation(data, my_output)
@@ -173,6 +179,7 @@ def benchmark(data, warmup=10, iters=100):
         print(f"❌ 验证失败！错误信息：{error_msg}")
 
     nvtx.range_push("gemm_profile_range")
+    _flush_l2()
     out = custom_kernel(data)
     nvtx.range_pop()
     torch.cuda.synchronize()
@@ -187,6 +194,7 @@ def benchmark(data, warmup=10, iters=100):
     
     start.record()
     for _ in range(iters):
+        _flush_l2()
         out = custom_kernel(data)
     end.record()
     torch.cuda.synchronize()
