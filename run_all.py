@@ -178,7 +178,7 @@ def load_kernel(module_name: str):
 
 
 def benchmark_kernel(custom_kernel, data, warmup=10, iters=100,
-                      flush_l2=True, l2_flush_size_mb=256):
+                      flush_l2=True, l2_flush_size_mb=512):
     """跟 liz.py 里的 benchmark_new 逻辑一致，只是 custom_kernel 作为参数传入。"""
     l2_flush_buffer = None
     if flush_l2:

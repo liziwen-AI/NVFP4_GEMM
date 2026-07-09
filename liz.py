@@ -1,4 +1,5 @@
 import torch
+import torch.cuda.nvtx as nvtx
 from task import input_t, output_t
 from utils import make_match_reference
 from contestant.submission import custom_kernel
@@ -165,10 +166,16 @@ def benchmark(data, warmup=10, iters=100):
 
     my_output = custom_kernel(data)
     is_correct, error_msg = check_implementation(data, my_output)
+    torch.cuda.synchronize()
     if is_correct:
         print("🎉 恭喜！你的自定义算子实现与参考实现完全吻合，精度达标！")
     else:
         print(f"❌ 验证失败！错误信息：{error_msg}")
+
+    nvtx.range_push("gemm_profile_range")
+    out = custom_kernel(data)
+    nvtx.range_pop()
+    torch.cuda.synchronize()
 
     # warmup
     for _ in range(warmup):
