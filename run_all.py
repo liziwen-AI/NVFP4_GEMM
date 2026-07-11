@@ -237,7 +237,7 @@ def main():
         help="用 task.yml 里的 tests / benchmarks / 两者都用",
     )
     parser.add_argument(
-        "--bench", action="store_true", default=True
+        "--bench", action="store_true", default=True,
         help="除了正确性校验，还做计时（会慢很多）",
     )
     parser.add_argument("--warmup", type=int, default=10)

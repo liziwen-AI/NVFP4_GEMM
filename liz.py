@@ -198,7 +198,6 @@ def benchmark(data, warmup=10, iters=100, l2_flush_size_mb=512):
     ends   = [torch.cuda.Event(enable_timing=True) for _ in range(iters)]
     
     try:
-        i=0
         for i in range(iters):
             _flush_l2()
             torch.cuda.synchronize()
