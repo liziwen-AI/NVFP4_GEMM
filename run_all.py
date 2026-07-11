@@ -237,8 +237,8 @@ def main():
         help="用 task.yml 里的 tests / benchmarks / 两者都用",
     )
     parser.add_argument(
-        "--bench", action="store_true",
-        help="除了正确性校验，还做计时（会慢很多，默认不开）",
+        "--bench", action="store_true", default=True
+        help="除了正确性校验，还做计时（会慢很多）",
     )
     parser.add_argument("--warmup", type=int, default=10)
     parser.add_argument("--iters", type=int, default=100)
@@ -257,11 +257,11 @@ def main():
     results = {name: [] for name in args.kernels}
 
     for module_name in args.kernels:
-        print(f"\n{'=' * 70}\n加载 kernel 模块: {module_name}\n{'=' * 70}")
+        print(f"\n{'=' * 70}\n加载 kernel 模块: {module_name.removeprefix('contestant.')}\n{'=' * 70}")
         try:
             custom_kernel = load_kernel(module_name)
         except Exception as e:
-            print(f"⚠️  加载 {module_name} 失败，跳过：{e}")
+            print(f"⚠️  加载 {module_name.removeprefix('contestant.')} 失败，跳过：{e}")
             continue
 
         for shape in shapes:
@@ -278,9 +278,9 @@ def main():
             entry = {"shape": shape, "correct": ok, "msg": msg}
 
             if ok:
-                print(f"✅ [{module_name}] {tag}")
+                print(f"✅ [{module_name.removeprefix('contestant.')}] {tag}")
             else:
-                print(f"❌ [{module_name}] {tag}  错误信息: {msg}")
+                print(f"❌ [{module_name.removeprefix('contestant.')}] {tag}  错误信息: {msg}")
 
             if ok and args.bench:
                 try:

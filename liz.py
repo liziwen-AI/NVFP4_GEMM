@@ -1,4 +1,5 @@
 import torch
+import numpy as np
 import torch.cuda.nvtx as nvtx
 from task import input_t, output_t
 from utils import make_match_reference
@@ -163,7 +164,7 @@ def generate_input(
     return (a_ref, b_ref, sfa_ref_cpu.to("cuda"), sfb_ref_cpu.to("cuda"), sfa_ref_permuted, sfb_ref_permuted, c_ref)
 
 def benchmark(data, warmup=10, iters=100, l2_flush_size_mb=512):
-
+    # nvidia-smi -lgc 1500
     numel = (l2_flush_size_mb * 1024 * 1024) // 4
     l2_flush_buffer = torch.empty(numel, dtype=torch.float32, device="cuda")
 
@@ -178,29 +179,48 @@ def benchmark(data, warmup=10, iters=100, l2_flush_size_mb=512):
     else:
         print(f"❌ 验证失败！错误信息：{error_msg}")
 
-    nvtx.range_push("gemm_profile_range")
     _flush_l2()
-    out = custom_kernel(data)
-    nvtx.range_pop()
     torch.cuda.synchronize()
+    nvtx.range_push("gemm_profile_range")
+    out = custom_kernel(data)
+    torch.cuda.synchronize()
+    nvtx.range_pop()
 
     # warmup
     for _ in range(warmup):
-        out = custom_kernel(data)
-    torch.cuda.synchronize()
-    
-    start = torch.cuda.Event(enable_timing=True)
-    end   = torch.cuda.Event(enable_timing=True)
-    
-    start.record()
-    for _ in range(iters):
         _flush_l2()
+        torch.cuda.synchronize() 
         out = custom_kernel(data)
-    end.record()
     torch.cuda.synchronize()
     
-    ms = start.elapsed_time(end) / iters
-    return ms
+    starts = [torch.cuda.Event(enable_timing=True) for _ in range(iters)]
+    ends   = [torch.cuda.Event(enable_timing=True) for _ in range(iters)]
+    
+    for i in range(iters):
+        _flush_l2()
+        torch.cuda.synchronize()
+        starts[i].record()
+        out = custom_kernel(data)
+        ends[i].record()
+
+    torch.cuda.synchronize()
+    
+
+    # 5. 更全面的统计维度
+    times_ms = [s.elapsed_time(e) for s, e in zip(starts, ends)]
+    
+    mean_ms = np.mean(times_ms)
+    median_ms = np.median(times_ms)
+    min_ms = np.min(times_ms)
+    std_ms = np.std(times_ms)
+    
+    print(f"📊 Benchmark 结果:")
+    print(f"   - Average (Mean): {mean_ms:.4f} ms")
+    print(f"   - Median:         {median_ms:.4f} ms")
+    print(f"   - Minimum:        {min_ms:.4f} ms")
+    print(f"   - Std Dev:        {std_ms:.4f} ms")
+    
+    return median_ms
 
 # 构造测试数据（需要看 task.py 里 input_t 的定义）
 # 通常 data = (A, B, ..., SFA, SFB, C)

@@ -10,6 +10,8 @@ bash ~/miniconda3/miniconda.sh -b -u -p ~/miniconda3
 rm -f ~/miniconda3/miniconda.sh
 
 export PATH=~/miniconda3/bin:$PATH
+conda init
+pip install pyyaml
 pip install ninja
 pip install cuda-python==13.0.0
 pip install torch --index-url https://download.pytorch.org/whl/cu130     
