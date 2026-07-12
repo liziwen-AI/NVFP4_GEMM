@@ -21,13 +21,13 @@ pip install nvidia-cutlass-dsl[cu13]
 cd contestant
 git clone --recursive https://github.com/NVIDIA/cutlass.git
 cd ..
+git clone https://github.com/liziwen-AI/data.git
+
 # export CUTLASS_NVCC_ARCHS=100
 # # 安装 CUTLASS 主包
 # cd cutlass
 # pip install numpy
 # pip install -e .
 
-cd ~
-cd NVFP4_GEMM
 # python -W error::DeprecationWarning liz.py
 python liz.py

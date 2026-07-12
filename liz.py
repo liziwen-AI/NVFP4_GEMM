@@ -213,6 +213,7 @@ def benchmark(data, warmup=10, iters=100, l2_flush_size_mb=512):
 
     # 5. 更全面的统计维度
     times_ms = [starts[i].elapsed_time(ends[i]) for i in range(iters)]
+    print(times_ms)
     times_ms.sort()
 
     mean_ms = sum(times_ms) / len(times_ms)
