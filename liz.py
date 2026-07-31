@@ -163,6 +163,7 @@ def generate_input(
 
     return (a_ref, b_ref, sfa_ref_cpu.to("cuda"), sfb_ref_cpu.to("cuda"), sfa_ref_permuted, sfb_ref_permuted, c_ref)
 
+
 def benchmark(data, warmup=10, iters=100, l2_flush_size_mb=512):
     # nvidia-smi -lgc 1500
     numel = (l2_flush_size_mb * 1024 * 1024) // 4
