@@ -1,6 +1,6 @@
 import torch
 import numpy as np
-import torch.cuda.nvtx as nvtx
+from torch.cuda.nvtx import range as nvtx_range
 from task import input_t, output_t
 from utils import make_match_reference
 # from contestant.submission import custom_kernel
@@ -183,10 +183,9 @@ def benchmark(data, warmup=10, iters=100, l2_flush_size_mb=512):
 
     _flush_l2()
     torch.cuda.synchronize()
-    nvtx.range_push("gemm_profile_range")
-    out = custom_kernel(data)
-    torch.cuda.synchronize()
-    nvtx.range_pop()
+    with nvtx_range("gemm_profile_range"):
+        out = custom_kernel(data)
+        torch.cuda.synchronize()
 
     # warmup
     for _ in range(warmup):
@@ -253,7 +252,7 @@ if __name__ == '__main__':
 
     check_implementation = make_match_reference(ref_kernel, rtol=1e-03, atol=1e-03)
 
-    m, n, k, l, seed = 2304, 4608, 7168, 1, 1111
+    m, n, k, l, seed = 128, 7168, 16384, 1, 1111
     data = generate_input(m, n, k, l, seed)
 
 
