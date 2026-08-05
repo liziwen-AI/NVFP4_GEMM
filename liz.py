@@ -252,7 +252,7 @@ if __name__ == '__main__':
 
     check_implementation = make_match_reference(ref_kernel, rtol=1e-03, atol=1e-03)
 
-    m, n, k, l, seed = 128, 7168, 16384, 1, 1111
+    m, n, k, l, seed = 2304, 4608, 7168, 1, 1111
     data = generate_input(m, n, k, l, seed)
 
 
