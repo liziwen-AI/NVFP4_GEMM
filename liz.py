@@ -3,10 +3,10 @@ import numpy as np
 from torch.cuda.nvtx import range as nvtx_range
 from task import input_t, output_t
 from utils import make_match_reference
-from contestant.submission import custom_kernel
+# from contestant.submission import custom_kernel
 # from contestant.gau_nernst import custom_kernel
 # from contestant.CatsRCool import custom_kernel
-# from contestant.s_am import custom_kernel
+from contestant.s_am import custom_kernel
 
 # Scaling factor vector size
 sf_vec_size = 16
@@ -213,7 +213,7 @@ def benchmark(data, warmup=10, iters=100, l2_flush_size_mb=512):
 
     # 5. 更全面的统计维度
     times_ms = [starts[i].elapsed_time(ends[i]) for i in range(iters)]
-    print(times_ms)
+    # print(times_ms)
     times_ms.sort()
 
     mean_ms = sum(times_ms) / len(times_ms)
@@ -222,6 +222,7 @@ def benchmark(data, warmup=10, iters=100, l2_flush_size_mb=512):
     std_ms = (sum((t - mean_ms) ** 2 for t in times_ms) / len(times_ms)) ** 0.5
     min_ms = times_ms[0]
     max_ms = times_ms[-1]
+    err_div_mean = std_ms / (len(times_ms) ** 0.5) / mean_ms
 
     # ---- 计算 TFLOPS（GEMM: 2*M*N*K*L 次浮点运算） ----
     a_ref, b_ref, _, _, _, _, c_ref = data
@@ -235,6 +236,7 @@ def benchmark(data, warmup=10, iters=100, l2_flush_size_mb=512):
     print(f"耗时(ms): mean={mean_ms:.4f}  median={median_ms:.4f}  "
           f"min={min_ms:.4f}  max={max_ms:.4f}  p90={p90_ms:.4f}  std={std_ms:.4f}")
     print(f"TFLOPS: mean={tflops_mean:.2f}  median={tflops_median:.2f}")
+    print(f"误差比例: err/mean={err_div_mean:.4f}")
 
     return {
         "mean_ms": mean_ms,
@@ -252,7 +254,10 @@ if __name__ == '__main__':
 
     check_implementation = make_match_reference(ref_kernel, rtol=1e-03, atol=1e-03)
 
-    m, n, k, l, seed = 2304, 4608, 7168, 1, 1111
+    m, n, k, l, seed = 128, 7168, 16384, 1, 1111
+    # m, n, k, l, seed = 128, 4096, 7168, 1, 1111
+    # m, n, k, l, seed = 128, 7168, 2048, 1, 1111
+
     data = generate_input(m, n, k, l, seed)
 
 
