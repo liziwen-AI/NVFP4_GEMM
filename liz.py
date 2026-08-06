@@ -1,3 +1,12 @@
+# =========================================================
+# 1. B200 (Blackwell sm_100a) 硬件编译优化环境变量注入
+# 必须在导入 torch 和 contestant 自定义算子前设置！
+# =========================================================
+# import os
+# os.environ["TORCH_CUDA_ARCH_LIST"] = "10.0a"
+# os.environ["CUTLASS_NVCC_ARCHS"] = "100a"
+# os.environ["EXTRA_NVCCFLAGS"] = "-O3 --use_fast_math -arch=sm_100a -Xptxas=-O3"
+
 import torch
 import numpy as np
 from torch.cuda.nvtx import range as nvtx_range
@@ -259,14 +268,6 @@ if __name__ == '__main__':
     # m, n, k, l, seed = 128, 7168, 2048, 1, 1111
 
     data = generate_input(m, n, k, l, seed)
-
-
-    # my_output = custom_kernel(data)
-    # is_correct, error_msg = check_implementation(data, my_output)
-    # if is_correct:
-    #     print("🎉 恭喜！你的自定义算子实现与参考实现完全吻合，精度达标！")
-    # else:
-    #     print(f"❌ 验证失败！错误信息：{error_msg}")
 
     print("🎯 benchmark")    
     result = benchmark(data)

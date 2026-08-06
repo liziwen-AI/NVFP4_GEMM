@@ -4,6 +4,7 @@ set -e  # 出错立即停止
 # git clone https://github.com/liziwen-AI/NVFP4_GEMM.git
 nvcc --version
 sudo apt update
+sudo apt install micro -y
 mkdir -p ~/miniconda3
 wget https://repo.anaconda.com/miniconda/Miniconda3-py311_26.3.2-2-Linux-x86_64.sh -O ~/miniconda3/miniconda.sh
 bash ~/miniconda3/miniconda.sh -b -u -p ~/miniconda3
