@@ -9,7 +9,6 @@
 
 import torch
 import torch.cuda
-from cutlass.cute.nvgpu.common import OpError
 import numpy as np
 from torch.cuda.nvtx import range as nvtx_range
 from task import input_t, output_t
@@ -200,7 +199,7 @@ def benchmark(data_list, iters=100):
         for data in data_list:
             output = custom_kernel(_clone_data(data))
             outputs.append(output)
-    except OpError as E:
+    except Exception as E:
         return f"Encountered {E}"
     for reference_output, custom_output in zip(check_copy, outputs):
         is_correct, error_msg = check_implementation(reference_output, custom_output)
